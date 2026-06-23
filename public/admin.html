@@ -335,6 +335,10 @@ textarea{resize:vertical;min-height:72px}
         <label class="lbl">Nárok / četnost</label>
         <input type="text" id="add-narok" placeholder="2 ks / rok">
       </div>
+      <div class="form-group">
+        <label class="lbl">Max. finanční strop <span style="font-weight:400;color:#999">(nepovinné)</span></label>
+        <input type="text" id="add-maxprice" placeholder="např. 2 500 Kč">
+      </div>
     </div>
     <div class="modal-btns">
       <button class="btn btn-ghost" onclick="closeAddModal()">Zrušit</button>
@@ -746,7 +750,7 @@ function fillAddDeptSel(selectedDeptId) {
   });
   updateAddCatSel();
   deptSel.onchange = updateAddCatSel;
-  ['add-kat','add-name','add-supplier','add-sizes','add-narok'].forEach(id => {
+  ['add-kat','add-name','add-supplier','add-sizes','add-narok','add-maxprice'].forEach(id => {
     document.getElementById(id).value = '';
   });
 }
@@ -777,7 +781,8 @@ function confirmAddItem() {
     sizes: document.getElementById('add-sizes').value.trim() || 'UNI',
     isEs: false,
     image: '',
-    narok: document.getElementById('add-narok').value.trim()
+    narok: document.getElementById('add-narok').value.trim(),
+    maxPrice: document.getElementById('add-maxprice').value.trim()
   };
   dept.categories[catIdx].items.push(newItem);
   closeAddModal();
