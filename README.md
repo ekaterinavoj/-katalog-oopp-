@@ -47,11 +47,13 @@ Admin panel (`/admin`) obsahuje čtyři sekce:
 
 ### 📦 Produkty
 - Přidání / editace / smazání jednotlivých OOPP položek
-- Každá položka: katalogové číslo, název, dodavatel, výrobní kód, velikosti, nárok / četnost, obrázek
+- Každá položka: katalogové číslo, název, dodavatel, výrobní kód, velikosti, nárok / četnost, obrázek, volitelný max. finanční strop s výběrem měny (CZK, EUR, USD, GBP)
 - Nahrání obrázku (přetažení nebo výběr souboru, max 10 MB) nebo zadání URL
+- **Max. finanční strop** — nepovinné pole; zobrazí se červeně a tučně u položky v katalogu i ve správě (např. `Max. 2 500 CZK`)
 - **Kopírování položky** — tlačítko 📋 Kopírovat na kartě položky uloží položku do schránky; tlačítko 📋 Vložit zkopírovanou položku se zobrazí u každé kategorie a umožní přidat kopii do jiného oddělení bez opětovného vypisování
+- **Přesouvání pořadí** — tlačítka ↑ ↓ umožňují měnit pořadí oddělení, kategorií i jednotlivých položek
 - Přidání / přejmenování / smazání kategorií v rámci oddělení (přejmenování se automaticky synchronizuje do všech oddělení se stejným názvem kategorie)
-- Přidání / smazání celých oddělení
+- Přidání / smazání celých oddělení; název a krátký název záložky lze upravit přímo na stránce Produkty bez nutnosti otevírat sekci Texty
 - Synchronizace názvu a obrázku: při uložení položky se název a obrázek automaticky synchronizují do všech položek se stejným katalogovým číslem napříč odděleními
 
 ### 📊 Přehled nároků OOPP
