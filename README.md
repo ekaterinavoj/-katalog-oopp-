@@ -241,8 +241,8 @@ Poté heslo znovu nastavte přes admin panel.
 |---|---|---|
 | `PORT` | `3000` | Port, na kterém server naslouchá |
 | `ADMIN_USERNAME` | `Gematex` | Přihlašovací jméno do správy |
-| `ADMIN_PASSWORD` | `Gematex 123` | Heslo do správy (výchozí, přepíše auth.json) |
-| `ADMIN_RESET_CODE` | `Gematex-obnova` | Záchranný kód pro reset hesla z prohlížeče |
+| `ADMIN_PASSWORD` | `*(vaše heslo)*` | Heslo do správy (výchozí, přepíše auth.json) |
+| `ADMIN_RESET_CODE` | `*(váš záchranný kód)*` | Záchranný kód pro reset hesla z prohlížeče |
 
 ---
 
