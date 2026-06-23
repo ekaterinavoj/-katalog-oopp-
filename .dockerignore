@@ -1,0 +1,6 @@
+node_modules
+.claude
+*.md
+data/products.json
+data/auth.json
+public/uploads/

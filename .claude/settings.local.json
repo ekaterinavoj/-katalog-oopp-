@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sed -n '300,320p' \"D:\\\\Prace\\\\GM\\\\Katalog-OOPP-Engel-Gematex-14 \\(1\\).html\")",
+      "Bash(powershell -command \"Get-Content 'D:\\\\Prace\\\\GM\\\\Katalog-OOPP-Engel-Gematex-14 \\(1\\).html' | Select-Object -Skip 299 -First 20\")",
+      "Bash(powershell -command \"Get-Content 'D:\\\\Prace\\\\GM\\\\Katalog-OOPP-Engel-Gematex-14 \\(1\\).html' | Select-Object -Skip 319 -First 100\")",
+      "PowerShell($lines = Get-Content 'D:\\\\Prace\\\\GM\\\\Katalog-OOPP-Engel-Gematex-14 \\(1\\).html'; for \\($i=315; $i -lt 330; $i++\\) { Write-Host \"Line $i len=$\\($lines[$i].Length\\): $\\($lines[$i].Substring\\(0,[Math]::Min\\(80,$lines[$i].Length\\)\\)\\)\" })",
+      "PowerShell($lines = Get-Content 'D:\\\\Prace\\\\GM\\\\Katalog-OOPP-Engel-Gematex-14 \\(1\\).html' -Encoding UTF8; $lines[580..720] -join \"`n\" | Select-Object -First 1 | ForEach-Object { $_.Substring\\(0, [Math]::Min\\(4000, $_.Length\\)\\) })",
+      "Bash(npm install *)",
+      "PowerShell(Get-Command node,npm -ErrorAction SilentlyContinue)",
+      "PowerShell(node --version 2>&1)",
+      "PowerShell(npm --version 2>&1)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(Get-Process node *)",
+      "Bash(Stop-Process -Force)",
+      "Bash(Start-Sleep -Milliseconds 500)",
+      "mcp__Claude_in_Chrome__navigate",
+      "mcp__Claude_in_Chrome__tabs_create_mcp",
+      "mcp__Claude_in_Chrome__javascript_tool",
+      "Bash(curl -s http://localhost:3000/admin)",
+      "mcp__Claude_in_Chrome__browser_batch"
+    ]
+  }
+}

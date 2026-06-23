@@ -1,0 +1,126 @@
+{
+  "title": "Katalog osobních ochranných pracovních prostředků",
+  "subtitle": "Engel-Gematex s.r.o.",
+  "introText": "Tento katalog obsahuje přehled osobních ochranných pracovních prostředků (OOPP) určených pro zaměstnance společnosti Engel-Gematex s.r.o. Obsahuje informace o dostupných prostředcích, frekvenci jejich výdeje a dostupných velikostech.",
+  "processSteps": [
+    "Vyberte záložku svého oddělení (Výroba / Administrativa / Sales).",
+    "Najděte položky, které potřebujete, a klikněte na <b>+ Přidat</b> – vyberte velikost a počet kusů.",
+    "V košíku (vpravo dole) vyplňte své jméno a oddělení.",
+    "Klikněte <b>Kopírovat objednávku</b> a vložte zkopírovaný text do e-mailu."
+  ],
+  "departments": [
+    {
+      "id": "vyroba",
+      "icon": "⚙️",
+      "shortName": "Výroba",
+      "name": "Výroba / Kvalita / Logistika",
+      "description": "Kompletní předepsaná výbava pro práci na hale (FAS, LOG, QA):",
+      "infoText": "",
+      "categories": [
+        {
+          "name": "Ochrana hlavy a zraku",
+          "items": [
+            { "id":"v_08","kat":"08","name":"Přilba - Petzl VERTEX VENT HI-VIZ","supplier":"Petzl","code":"","sizes":"UNI","isEs":false,"image":"","narok":"dle potřeby" },
+            { "id":"v_09","kat":"09","name":"Ochranná přilba 3M PELTOR + podbradník","supplier":"APP","code":"","sizes":"UNI","isEs":false,"image":"","narok":"dle potřeby" },
+            { "id":"v_10","kat":"10","name":"Ochranné brýle UVEX","supplier":"UVEX","code":"","sizes":"UNI","isEs":false,"image":"","narok":"dle potřeby" }
+          ]
+        },
+        {
+          "name": "Ochrana trupu / Viditelnost",
+          "items": [
+            { "id":"v_07","kat":"07","name":"Reflexní vesta Warsaw Executive","supplier":"APP","code":"","sizes":"S, M, L, XL, XXL, XXXL","isEs":false,"image":"","narok":"1 ks / dle požadavku" },
+            { "id":"v_12","kat":"12","name":"Unisex bezpečnostní reflexní vesta","supplier":"APP","code":"","sizes":"S, M, L, XL, XXL, XXXL","isEs":false,"image":"","narok":"dle potřeby" },
+            { "id":"v_06","kat":"06","name":"Triko reflexní","supplier":"APP","code":"","sizes":"S, M, L, XL, XXL, XXXL","isEs":false,"image":"","narok":"5 ks / rok" },
+            { "id":"v_05","kat":"05","name":"Mikina (Astral)","supplier":"APP","code":"","sizes":"S, M, L, XL, XXL, XXXL","isEs":false,"image":"","narok":"1 ks / rok" },
+            { "id":"v_04","kat":"04","name":"Bunda monter (řada HALI)","supplier":"APP","code":"","sizes":"36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64","isEs":false,"image":"","narok":"2 ks / rok" }
+          ]
+        },
+        {
+          "name": "Ochrana dolní části těla",
+          "items": [
+            { "id":"v_01","kat":"01","name":"Kalhoty s laclem","supplier":"APP","code":"","sizes":"36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64","isEs":false,"image":"","narok":"2 ks / rok" },
+            { "id":"v_02","kat":"02","name":"Kalhoty bez laclu","supplier":"APP","code":"","sizes":"36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64","isEs":false,"image":"","narok":"2 ks / rok" },
+            { "id":"v_03","kat":"03","name":"DAYBORO šortky","supplier":"APP","code":"","sizes":"36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64","isEs":false,"image":"","narok":"2 ks / rok" }
+          ]
+        },
+        {
+          "name": "Ochrana nohou",
+          "items": [
+            { "id":"v_11","kat":"11","name":"Obuv S1 (dle požadavku)","supplier":"různí výrobci","code":"","sizes":"dle požadavku","isEs":false,"image":"","narok":"dle potřeby" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "admin",
+      "icon": "🏢",
+      "shortName": "Administrativa",
+      "name": "Administrativa",
+      "description": "Základní ochranné prostředky pro pohyb na hale (podle typu a velikosti):",
+      "infoText": "",
+      "categories": [
+        {
+          "name": "Ochrana trupu / Viditelnost",
+          "items": [
+            { "id":"a_07","kat":"07","name":"Reflexní vesta Warsaw Executive","supplier":"APP","code":"","sizes":"S, M, L, XL, XXL, XXXL","isEs":false,"image":"","narok":"" },
+            { "id":"a_12","kat":"12","name":"Unisex bezpečnostní reflexní vesta (pro vstup s doprovodem)","supplier":"APP","code":"","sizes":"S, M, L, XL, XXL, XXXL","isEs":false,"image":"","narok":"" }
+          ]
+        },
+        {
+          "name": "Ochrana nohou",
+          "items": [
+            { "id":"a_11","kat":"11","name":"Obuv S1 (dle požadavku)","supplier":"různí výrobci","code":"","sizes":"dle požadavku","isEs":false,"image":"","narok":"" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sales",
+      "icon": "🚗",
+      "shortName": "Sales",
+      "name": "Sales / After Market Servis",
+      "description": "OOPP pro servisní, obchodní a technické pracovníky v terénu. Frekvence a dostupnost se řídí specifikacemi výrobce – většina položek zn. Engelbert-Strauss, velikosti dle webu výrobce (www.strauss.com).",
+      "infoText": "O rozsahu a skladbě vybavenosti OOPP rozhoduje vždy vedoucí oddělení na základě uvážení, co daný zaměstnanec ke své práci skutečně potřebuje. Zaměstnanec může rovněž dostat vybavení i z jiného oddělení.<br>V případě, že zaměstnanec požaduje prostředek, který není zahrnut ve schváleném katalogu, musí se obrátit na svého vedoucího.",
+      "categories": [
+        {
+          "name": "Ochrana hlavy a zraku",
+          "items": [
+            { "id":"s_08","kat":"08","name":"Přilba - Petzl VERTEX VENT HI-VIZ","supplier":"Petzl","code":"","sizes":"UNI","isEs":false,"image":"","narok":"dle potřeby" },
+            { "id":"s_09","kat":"09","name":"Ochranná přilba 3M PELTOR + podbradník","supplier":"APP","code":"","sizes":"UNI","isEs":false,"image":"","narok":"dle potřeby" },
+            { "id":"s_10","kat":"10","name":"Ochranné brýle UVEX","supplier":"UVEX","code":"","sizes":"UNI","isEs":false,"image":"","narok":"dle potřeby" }
+          ]
+        },
+        {
+          "name": "Ochrana trupu / Viditelnost",
+          "items": [
+            { "id":"s_13","kat":"13","name":"Výstražná softshellová bunda","supplier":"Engelbert-Strauss","code":"","sizes":"dle požadavku","isEs":true,"image":"","narok":"1 ks / dle požadavku" },
+            { "id":"s_14","kat":"14","name":"Podvlékačky Long-Pants Merino","supplier":"Engelbert-Strauss","code":"","sizes":"dle požadavku","isEs":true,"image":"","narok":"dle potřeby" },
+            { "id":"s_15","kat":"15","name":"Výstražné kalhoty do pasu","supplier":"Engelbert-Strauss","code":"","sizes":"dle požadavku","isEs":true,"image":"","narok":"2 ks / rok" },
+            { "id":"s_16","kat":"16","name":"Víceúčelové ponožky Function cool/high","supplier":"Engelbert-Strauss","code":"","sizes":"dle požadavku","isEs":true,"image":"","narok":"1 ks / rok" },
+            { "id":"s_17","kat":"17","name":"Výstražné funkční triko dlouhý rukáv e.s.motion","supplier":"Engelbert-Strauss","code":"","sizes":"dle požadavku","isEs":true,"image":"","narok":"5 ks / rok" },
+            { "id":"s_18","kat":"18","name":"Multifunkční pracovní bunda Guard 4 in 1","supplier":"Engelbert-Strauss","code":"","sizes":"dle požadavku","isEs":true,"image":"","narok":"2 ks / rok" },
+            { "id":"s_07","kat":"07","name":"Reflexní vesta Warsaw Executive","supplier":"APP","code":"","sizes":"S, M, L, XL, XXL, XXXL","isEs":false,"image":"","narok":"2 ks / rok" },
+            { "id":"s_12","kat":"12","name":"Unisex bezpečnostní reflexní vesta","supplier":"APP","code":"","sizes":"S, M, L, XL, XXL, XXXL","isEs":false,"image":"","narok":"2 ks / rok" },
+            { "id":"s_04","kat":"04","name":"Bunda monter (řada HALI)","supplier":"APP","code":"","sizes":"36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64","isEs":false,"image":"","narok":"" },
+            { "id":"s_05","kat":"05","name":"Mikina (Astral)","supplier":"APP","code":"","sizes":"S, M, L, XL, XXL, XXXL","isEs":false,"image":"","narok":"" },
+            { "id":"s_06","kat":"06","name":"Triko reflexní","supplier":"APP","code":"","sizes":"S, M, L, XL, XXL, XXXL","isEs":false,"image":"","narok":"" }
+          ]
+        },
+        {
+          "name": "Ochrana dolní části těla",
+          "items": [
+            { "id":"s_01","kat":"01","name":"Kalhoty s laclem","supplier":"APP","code":"","sizes":"36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64","isEs":false,"image":"","narok":"" },
+            { "id":"s_02","kat":"02","name":"Kalhoty bez laclu","supplier":"APP","code":"","sizes":"36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64","isEs":false,"image":"","narok":"" },
+            { "id":"s_03","kat":"03","name":"DAYBORO šortky","supplier":"APP","code":"","sizes":"36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64","isEs":false,"image":"","narok":"" }
+          ]
+        },
+        {
+          "name": "Ochrana nohou",
+          "items": [
+            { "id":"s_19","kat":"19","name":"Obuv S1/S3 (dle požadavku)","supplier":"různí výrobci","code":"","sizes":"dle požadavku","isEs":false,"image":"","narok":"dle potřeby" }
+          ]
+        }
+      ]
+    }
+  ]
+}

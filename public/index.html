@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Katalog OOPP – Engel-Gematex s.r.o.</title>
+<style>
+html,body{height:100%;margin:0;padding:0;font-family:'Calibri','Arial',sans-serif;background:rgb(232,244,251);line-height:1.5}
+.wrapper{max-width:920px;margin:38px auto 48px auto;background:#fff;border-radius:18px;border:2px solid rgb(0,123,194);box-shadow:0 6px 32px rgba(10,11,9,.11),0 2px 4px rgba(0,0,0,.03);padding:0 32px 46px 32px}
+.header-row{display:flex;flex-direction:column;align-items:stretch;padding:22px 0 0 0}
+.header-brand{display:flex;justify-content:flex-end;padding-bottom:14px}
+.header-logo{max-width:240px;height:auto;display:block}
+.header-title-box{width:100%;text-align:center;padding:14px 0 18px 0;border-bottom:2px solid rgb(0,123,194)}
+.main-title{color:rgb(10,11,9);font-size:1.7em;font-weight:700;margin:0 0 5px 0;line-height:1.2;font-family:'Calibri','Arial',sans-serif}
+.main-subtitle{color:rgb(145,146,147);font-size:.96em;font-weight:600;margin:0}
+hr{border:0;border-top:2px solid rgb(0,123,194);margin:28px 0}
+h2{color:rgb(10,11,9);font-size:1.35em;margin:32px 0 12px 0;font-weight:700;letter-spacing:.5px}
+.intro-box{background:rgba(200,213,253,.15);border-left:4px solid rgb(0,123,194);padding:14px 20px;border-radius:8px;margin:20px 0}
+.process-list{counter-reset:steps;list-style:none;padding:0;margin:14px 0}
+.process-list li{counter-increment:steps;display:flex;gap:12px;margin-bottom:10px;align-items:flex-start}
+.process-list li::before{content:counter(steps);background:rgb(0,123,194);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82em;flex-shrink:0;margin-top:2px}
+.step-note{display:block;font-size:.82em;color:#666;margin-top:4px;font-style:italic;line-height:1.4}
+.tabs-wrapper{margin-top:6px}
+.tab-nav{display:flex;border-bottom:3px solid rgb(0,123,194)}
+.tab-btn{flex:1;padding:11px 10px;border:none;border-bottom:3px solid transparent;border-radius:8px 8px 0 0;margin-bottom:-3px;background:rgba(0,123,194,.07);color:rgb(10,11,9);font-family:'Calibri','Arial',sans-serif;font-size:.95em;font-weight:600;cursor:pointer;transition:background .17s;white-space:nowrap}
+.tab-btn+.tab-btn{margin-left:4px}
+.tab-btn:hover{background:rgba(0,123,194,.18)}
+.tab-btn.active{background:rgb(0,123,194);color:#fff;border-bottom-color:rgb(0,123,194)}
+.tab-panel{display:none;padding:22px 0 8px 0}
+.tab-panel.active{display:block;animation:fadeTab .2s ease}
+@keyframes fadeTab{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.info-sales{background:rgba(200,213,253,.22);border-left:4px solid rgb(0,123,194);color:rgb(10,11,9);padding:16px 22px;margin:0 0 20px 0;border-radius:8px}
+.narok-section{margin:22px 0 10px 0;background:#f5f9fd;border:1.5px solid rgba(0,123,194,.22);border-radius:12px;overflow:hidden}
+.narok-header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:rgba(0,123,194,.08);border-bottom:1px solid rgba(0,123,194,.18);cursor:pointer;user-select:none}
+.narok-title{font-weight:700;font-size:.93em;color:rgb(0,60,120)}
+.narok-body{padding:12px 16px 16px}.narok-body.collapsed{display:none}
+.narok-table{width:100%;border-collapse:collapse;font-size:.85em}
+.narok-table th{background:rgba(0,123,194,.12);color:rgb(0,60,120);font-weight:700;padding:7px 10px;text-align:left;border-bottom:2px solid rgba(0,123,194,.2)}
+.narok-table td{padding:6px 10px;border-bottom:1px solid rgba(0,123,194,.08);vertical-align:middle;color:rgb(30,30,30)}
+.narok-table tr:last-child td{border-bottom:none}
+.narok-kat{font-weight:700;color:rgb(0,80,150);width:52px}
+.narok-badge{display:inline-block;font-size:.78em;font-weight:700;padding:2px 9px;border-radius:5px;white-space:nowrap}
+.narok-rok{background:rgba(0,160,80,.12);color:rgb(0,110,50)}
+.narok-potreba{background:rgba(0,123,194,.10);color:rgb(0,75,140)}
+.narok-pozadavku{background:rgba(200,100,0,.10);color:rgb(150,70,0)}
+.narok-prazdne{background:rgba(180,180,180,.12);color:rgb(130,130,130)}
+.item-table{border-collapse:separate;border-spacing:0;margin:0 auto 25px auto;width:100%;background:#f5f9fd;border-radius:11px;box-shadow:0 1px 6px rgba(0,123,194,.04);overflow:hidden}
+.item-table th{background:#007bc2;color:#fff;font-weight:700;padding:12px 8px;font-size:1em;text-align:left;border:none;font-family:'Calibri','Arial',sans-serif}
+.item-table td{padding:11px 9px;vertical-align:middle;font-size:1em;background:#fff;border-bottom:1px solid #e3e3e3;font-family:'Calibri','Arial',sans-serif}
+.item-table tr:last-child td{border-bottom:none}
+.cat-row td{background:rgba(0,123,194,.08)!important;color:rgb(0,75,135);font-weight:700;font-size:.88em;padding:7px 12px!important;border-bottom:none!important;border-top:2px solid rgba(0,123,194,.18)!important}
+.dodav-th{width:110px}.kod-th{width:120px}.vel-th{width:140px;text-align:center!important}.img-th{width:90px;text-align:center!important}.cart-th{width:130px;text-align:center!important}
+.vel-td{text-align:center;font-size:.84em;color:rgb(50,50,50)}
+.img-cell{width:90px;padding:4px 6px!important;text-align:center!important}
+.thumb-img{max-width:70px;max-height:56px;border-radius:8px;border:2px solid rgb(0,123,194);background:#f5f9fd;cursor:zoom-in;transition:transform .17s,box-shadow .17s;box-shadow:0 2px 8px rgba(0,123,194,.15)}
+.thumb-img:hover{transform:scale(1.09);box-shadow:0 4px 16px rgba(0,123,194,.28)}
+.no-img{color:#ccc;font-size:.75em;text-align:center}
+.cart-td{text-align:center!important;padding:5px 4px!important}
+.cart-add-btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;background:rgb(0,123,194);color:#fff;border:none;border-radius:6px;padding:7px 11px;font-size:.8em;font-weight:600;cursor:pointer;font-family:'Calibri','Arial',sans-serif;white-space:nowrap;transition:background .15s,transform .1s}
+.cart-add-btn:hover{background:rgb(0,95,155);transform:scale(1.04)}.cart-add-btn:active{transform:scale(.97)}
+.cart-add-es{background:rgba(210,120,0,.85)}.cart-add-es:hover{background:rgba(165,85,0,.95)}
+.cart-es-wrap{display:flex;flex-direction:column;align-items:center;gap:4px}
+.es-size-link{font-size:.74em;color:rgb(0,100,180);text-decoration:none;display:inline-flex;align-items:center;gap:3px;white-space:nowrap;font-weight:600;padding:2px 5px;border-radius:4px;background:rgba(0,123,194,.06);border:1px solid rgba(0,123,194,.15)}
+.es-size-link:hover{background:rgba(0,123,194,.14)}
+#lightbox-overlay{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.85);cursor:zoom-out;align-items:center;justify-content:center}
+#lightbox-overlay.active{display:flex;animation:lbIn .2s ease}
+@keyframes lbIn{from{opacity:0}to{opacity:1}}
+#lightbox-overlay img{max-width:88vw;max-height:88vh;border-radius:12px;box-shadow:0 8px 48px rgba(0,0,0,.6)}
+#lightbox-close{position:fixed;top:20px;right:28px;color:#fff;font-size:1.8em;cursor:pointer;z-index:10000;background:rgba(0,0,0,.45);border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center}
+#lightbox-close:hover{background:rgb(0,123,194)}
+#cart-modal-overlay{display:none;position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,.45);align-items:center;justify-content:center}
+#cart-modal-overlay.active{display:flex;animation:lbIn .18s ease}
+#cart-modal{background:#fff;border-radius:14px;padding:26px 28px 22px;min-width:300px;max-width:420px;width:90vw;box-shadow:0 8px 40px rgba(0,0,0,.22);font-family:'Calibri','Arial',sans-serif}
+#cart-modal h3{margin:0 0 4px 0;font-size:1.05em;color:rgb(10,11,9)}.modal-sub{font-size:.82em;color:#888;margin-bottom:16px}
+.modal-field{margin-bottom:14px}.modal-field label{display:block;font-size:.84em;font-weight:700;color:rgb(0,75,140);margin-bottom:5px}
+.modal-field select,.modal-field input[type=number]{width:100%;padding:8px 10px;border:1.5px solid rgba(0,123,194,.4);border-radius:7px;font-size:.92em;font-family:'Calibri','Arial',sans-serif;outline:none;background:#f5f9fd;box-sizing:border-box}
+.modal-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+.modal-btn-cancel{background:none;border:1.5px solid #ddd;color:#888;border-radius:7px;padding:8px 16px;cursor:pointer;font-size:.9em;font-family:'Calibri','Arial',sans-serif}
+.modal-btn-add{background:rgb(0,123,194);color:#fff;border:none;border-radius:7px;padding:8px 18px;cursor:pointer;font-size:.9em;font-weight:700;font-family:'Calibri','Arial',sans-serif}
+.modal-btn-add:hover{background:rgb(0,95,155)}
+#cart-panel{position:fixed;bottom:24px;right:24px;z-index:7000;background:#fff;border:2px solid rgb(0,123,194);border-radius:14px;box-shadow:0 6px 32px rgba(0,123,194,.22);min-width:340px;max-width:420px;max-height:calc(100vh - 48px);font-family:'Calibri','Arial',sans-serif;display:flex;flex-direction:column;overflow:hidden;transition:opacity .2s,transform .2s}
+#cart-panel.hidden{opacity:0;pointer-events:none;transform:translateY(12px)}
+#cart-header{background:rgb(0,123,194);color:#fff;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;flex-shrink:0}
+#cart-header-title{font-weight:700;font-size:.95em;display:flex;align-items:center;gap:7px}
+#cart-badge{background:#fff;color:rgb(0,123,194);border-radius:50%;width:20px;height:20px;font-size:.75em;font-weight:900;display:inline-flex;align-items:center;justify-content:center}
+#cart-toggle-btn{background:none;border:none;color:#fff;cursor:pointer;font-size:1.1em;padding:2px 6px}
+#cart-body{padding:10px 14px 14px;overflow-y:auto;flex:1}
+#cart-body.collapsed{display:none}
+#cart-items-list{list-style:none;margin:0 0 12px 0;padding:0}
+#cart-items-list li{display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid rgba(0,123,194,.1);font-size:.83em}
+#cart-items-list li:last-child{border-bottom:none}
+.cart-item-kat{font-weight:700;color:rgb(0,80,150);min-width:28px;flex-shrink:0}
+.cart-item-name{flex:1;color:rgb(30,30,30);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cart-item-vel{color:rgb(100,100,100);font-style:italic;font-size:.9em;min-width:38px;flex-shrink:0}
+.cart-item-qty{min-width:22px;text-align:center;font-weight:700;flex-shrink:0}
+.cart-item-del{background:none;border:none;color:#ccc;cursor:pointer;font-size:1em;padding:0 2px;flex-shrink:0}.cart-item-del:hover{color:#e00}
+.cart-user-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.cart-user-fields label{display:block;font-size:.75em;font-weight:700;color:rgb(0,75,140);margin-bottom:3px}
+.cart-user-fields input{width:100%;padding:5px 8px;border:1.5px solid rgba(0,123,194,.35);border-radius:6px;font-size:.82em;font-family:'Calibri','Arial',sans-serif;outline:none;box-sizing:border-box}
+.cart-action-row{display:flex;gap:8px}
+.cart-copy-btn{flex:1;background:rgb(0,123,194);color:#fff;border:none;border-radius:7px;padding:9px 10px;font-size:.85em;font-weight:700;cursor:pointer;font-family:'Calibri','Arial',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;transition:background .15s}.cart-copy-btn:hover{background:rgb(0,95,155)}
+.cart-clear-btn{background:none;border:1.5px solid #ddd;color:#999;border-radius:7px;padding:9px 13px;font-size:.85em;cursor:pointer;font-family:'Calibri','Arial',sans-serif}.cart-clear-btn:hover{border-color:#bbb;color:#555}
+.cart-empty-msg{text-align:center;color:#aaa;font-size:.82em;padding:8px 0}
+.cart-copied-msg{display:none;text-align:center;color:rgb(0,140,80);font-size:.82em;font-weight:700;margin-top:6px}
+.email-vzor-wrap{margin:18px 0 4px 0;display:flex;gap:14px;flex-wrap:wrap}
+.email-vzor-box{flex:1;min-width:260px;background:#f5f9fd;border:1.5px solid rgba(0,123,194,.28);border-radius:10px;overflow:hidden;font-size:.875em;font-family:'Calibri','Arial',sans-serif}
+.email-vzor-hdr{padding:9px 14px;font-weight:700;font-size:.9em;display:flex;align-items:center;gap:7px;background:rgba(0,123,194,.1);color:rgb(0,75,140);border-bottom:1px solid rgba(0,123,194,.15)}
+.email-vzor-body{padding:12px 16px 14px;line-height:1.8;color:rgb(35,35,35);white-space:pre-wrap;font-size:.88em}
+.email-vzor-body .lbl{font-weight:700;color:rgb(0,80,150)}
+.email-tip{flex:1;min-width:220px;background:rgba(178,231,50,.12);border-left:4px solid rgb(0,123,194);border-radius:8px;padding:12px 16px;font-size:.86em;color:rgb(40,40,40);line-height:1.65}
+.admin-link{position:fixed;top:14px;right:18px;font-size:.78em;color:rgba(0,123,194,.55);text-decoration:none;font-family:'Calibri',sans-serif}
+.admin-link:hover{color:rgb(0,123,194)}
+@media(max-width:680px){
+  .wrapper{padding:0 8px 24px 8px}
+  #cart-panel{min-width:unset;width:calc(100vw - 32px);right:16px;bottom:16px}
+  .header-logo{max-width:160px}
+  .main-title{font-size:1.25em!important}
+  .tab-btn{font-size:.82em;padding:9px 5px}
+  .table-scroll-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -8px;padding:0 8px}
+  .dodav-th,.kod-th,.img-th,.item-table tr td:nth-child(3),.item-table tr td:nth-child(4),.item-table tr td:nth-child(6){display:none}
+  .item-table th,.item-table td{font-size:.82em;padding:8px 5px}
+  .thumb-img{max-width:48px;max-height:38px}
+  .cart-add-btn{font-size:.74em;padding:6px 7px}
+  .email-vzor-wrap{flex-direction:column}
+}
+</style>
+</head>
+<body>
+<a class="admin-link" href="/admin">⚙ správa katalogu</a>
+
+<div class="wrapper">
+  <div class="header-row">
+    <div class="header-brand">
+      <img src="/logo.jpg" class="header-logo" alt="Engel-Gematex" onerror="this.style.display='none'">
+    </div>
+    <div class="header-title-box">
+      <h1 class="main-title" id="page-title">Katalog OOPP</h1>
+      <p class="main-subtitle" id="page-subtitle">Osobní ochranné pracovní prostředky</p>
+    </div>
+  </div>
+
+  <div id="intro-section"></div>
+
+  <hr>
+
+  <div class="tabs-wrapper">
+    <div class="tab-nav" id="tab-nav"></div>
+    <div id="tab-content">
+      <div style="text-align:center;padding:48px;color:#999;font-size:1em">Načítání katalogu…</div>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div id="lightbox-overlay" onclick="closeLightbox()">
+  <div id="lightbox-close" onclick="closeLightbox()">✕</div>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<!-- Cart modal -->
+<div id="cart-modal-overlay">
+  <div id="cart-modal">
+    <h3 id="modal-item-name">Položka</h3>
+    <p class="modal-sub" id="modal-item-sub"></p>
+    <div class="modal-field" id="modal-size-field">
+      <label>Velikost</label>
+      <select id="modal-size"></select>
+    </div>
+    <div class="modal-field">
+      <label>Počet kusů</label>
+      <input type="number" id="modal-qty" min="1" max="99" value="1">
+    </div>
+    <div class="modal-btns">
+      <button class="modal-btn-cancel" onclick="closeCartModal()">Zrušit</button>
+      <button class="modal-btn-add" onclick="addToCartFromModal()">+ Přidat do košíku</button>
+    </div>
+  </div>
+</div>
+
+<!-- Cart panel -->
+<div id="cart-panel" class="hidden">
+  <div id="cart-header" onclick="toggleCart()">
+    <span id="cart-header-title">🛒 Košík <span id="cart-badge">0</span></span>
+    <button id="cart-toggle-btn">▼</button>
+  </div>
+  <div id="cart-body">
+    <div id="cart-empty-msg" class="cart-empty-msg">Košík je prázdný</div>
+    <ul id="cart-items-list"></ul>
+    <div class="cart-user-fields">
+      <div><label>Oddělení</label><input id="cart-dept" type="text" placeholder="např. Výroba"></div>
+      <div><label>Jméno</label><input id="cart-name" type="text" placeholder="Vaše jméno"></div>
+    </div>
+    <div class="cart-action-row">
+      <button class="cart-copy-btn" onclick="copyCart()">📋 Kopírovat objednávku</button>
+      <button class="cart-clear-btn" onclick="clearCart(this)">Vyprázdnit</button>
+    </div>
+    <div id="cart-copied-msg" class="cart-copied-msg">✓ Zkopírováno do schránky!</div>
+  </div>
+</div>
+
+<script>
+'use strict';
+let allData = {};
+let cart = JSON.parse(localStorage.getItem('oopp-cart') || '[]');
+let modalItem = null;
+
+// ── Init ───────────────────────────────────────────────────────────────────────
+const FALLBACK_DATA = {"title":"Katalog OOPP","subtitle":"Osobní ochranné pracovní prostředky – Engel-Gematex s.r.o.","introText":"Tento katalog obsahuje přehled osobních ochranných pracovních prostředků (OOPP) určených pro zaměstnance společnosti Engel-Gematex s.r.o.","processSteps":["Vyberte záložku svého oddělení (Výroba / Administrativa / Sales).","Najděte položky, které potřebujete, a klikněte na <b>+ Přidat</b> – vyberte velikost a počet kusů.","V košíku (vpravo dole) vyplňte své jméno a oddělení.","Klikněte <b>Kopírovat objednávku</b> a vložte text do e-mailu na Procurement."],"departments":[{"id":"vyroba","icon":"⚙️","shortName":"Výroba","name":"Výroba / Kvalita / Logistika","description":"Kompletní předepsaná výbava pro práci na hale (FAS, LOG, QA):","infoText":"","categories":[{"name":"Ochrana hlavy a zraku","items":[{"id":"v_08","kat":"08","name":"Přilba - Petzl VERTEX VENT HI-VIZ","supplier":"Petzl","code":"","sizes":"UNI","isEs":false,"image":"","narok":"dle potřeby"},{"id":"v_09","kat":"09","name":"Ochranná přilba 3M PELTOR + podbradník","supplier":"APP","code":"","sizes":"UNI","isEs":false,"image":"","narok":"dle potřeby"},{"id":"v_10","kat":"10","name":"Ochranné brýle UVEX","supplier":"UVEX","code":"","sizes":"UNI","isEs":false,"image":"","narok":"dle potřeby"}]},{"name":"Ochrana trupu / Viditelnost","items":[{"id":"v_07","kat":"07","name":"Reflexní vesta Warsaw Executive","supplier":"APP","code":"","sizes":"S, M, L, XL, XXL, XXXL","isEs":false,"image":"","narok":"1 ks / dle požadavku"},{"id":"v_12","kat":"12","name":"Unisex bezpečnostní reflexní vesta","supplier":"APP","code":"","sizes":"S, M, L, XL, XXL, XXXL","isEs":false,"image":"","narok":"dle potřeby"},{"id":"v_06","kat":"06","name":"Triko reflexní","supplier":"APP","code":"","sizes":"S, M, L, XL, XXL, XXXL","isEs":false,"image":"","narok":"5 ks / rok"},{"id":"v_05","kat":"05","name":"Mikina (Astral)","supplier":"APP","code":"","sizes":"S, M, L, XL, XXL, XXXL","isEs":false,"image":"","narok":"1 ks / rok"},{"id":"v_04","kat":"04","name":"Bunda monter (řada HALI)","supplier":"APP","code":"","sizes":"36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64","isEs":false,"image":"","narok":"2 ks / rok"}]},{"name":"Ochrana dolní části těla","items":[{"id":"v_01","kat":"01","name":"Kalhoty s laclem","supplier":"APP","code":"","sizes":"36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64","isEs":false,"image":"","narok":"2 ks / rok"},{"id":"v_02","kat":"02","name":"Kalhoty bez laclu","supplier":"APP","code":"","sizes":"36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64","isEs":false,"image":"","narok":"2 ks / rok"},{"id":"v_03","kat":"03","name":"DAYBORO šortky","supplier":"APP","code":"","sizes":"36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64","isEs":false,"image":"","narok":"2 ks / rok"}]},{"name":"Ochrana nohou","items":[{"id":"v_11","kat":"11","name":"Obuv S1 (dle požadavku)","supplier":"různí výrobci","code":"","sizes":"dle požadavku","isEs":false,"image":"","narok":"dle potřeby"}]}]},{"id":"admin","icon":"🏢","shortName":"Administrativa","name":"Administrativa","description":"Základní ochranné prostředky pro pohyb na hale (podle typu a velikosti):","infoText":"","categories":[{"name":"Viditelnost / Bezpečnost","items":[{"id":"a_07","kat":"07","name":"Reflexní vesta Warsaw Executive","supplier":"APP","code":"","sizes":"S, M, L, XL, XXL, XXXL","isEs":false,"image":"","narok":""},{"id":"a_12","kat":"12","name":"Unisex bezpečnostní reflexní vesta (pro vstup s doprovodem)","supplier":"APP","code":"","sizes":"S, M, L, XL, XXL, XXXL","isEs":false,"image":"","narok":""}]},{"name":"Ochrana nohou","items":[{"id":"a_11","kat":"11","name":"Obuv S1 (dle požadavku)","supplier":"různí výrobci","code":"","sizes":"dle požadavku","isEs":false,"image":"","narok":""}]}]},{"id":"sales","icon":"🚗","shortName":"Sales","name":"Sales / After Market Servis","description":"OOPP pro servisní, obchodní a technické pracovníky v terénu.","infoText":"O rozsahu a skladbě vybavenosti OOPP rozhoduje vždy vedoucí oddělení na základě uvážení, co daný zaměstnanec ke své práci skutečně potřebuje.","categories":[{"name":"Ochrana hlavy a zraku","items":[{"id":"s_08","kat":"08","name":"Přilba - Petzl VERTEX VENT HI-VIZ","supplier":"Petzl","code":"","sizes":"UNI","isEs":false,"image":"","narok":"dle potřeby"},{"id":"s_09","kat":"09","name":"Ochranná přilba 3M PELTOR + podbradník","supplier":"APP","code":"","sizes":"UNI","isEs":false,"image":"","narok":"dle potřeby"},{"id":"s_10","kat":"10","name":"Ochranné brýle UVEX","supplier":"UVEX","code":"","sizes":"UNI","isEs":false,"image":"","narok":"dle potřeby"}]},{"name":"Ochrana trupu / Viditelnost","items":[{"id":"s_13","kat":"13","name":"Výstražná softshellová bunda","supplier":"Engelbert-Strauss","code":"","sizes":"dle požadavku","isEs":true,"image":"","narok":"1 ks / dle požadavku"},{"id":"s_14","kat":"14","name":"Podvlékačky Long-Pants Merino","supplier":"Engelbert-Strauss","code":"","sizes":"dle požadavku","isEs":true,"image":"","narok":"dle potřeby"},{"id":"s_15","kat":"15","name":"Výstražné kalhoty do pasu","supplier":"Engelbert-Strauss","code":"","sizes":"dle požadavku","isEs":true,"image":"","narok":"2 ks / rok"},{"id":"s_16","kat":"16","name":"Víceúčelové ponožky Function cool/high","supplier":"Engelbert-Strauss","code":"","sizes":"dle požadavku","isEs":true,"image":"","narok":"1 ks / rok"},{"id":"s_17","kat":"17","name":"Výstražné funkční triko dlouhý rukáv e.s.motion","supplier":"Engelbert-Strauss","code":"","sizes":"dle požadavku","isEs":true,"image":"","narok":"5 ks / rok"},{"id":"s_18","kat":"18","name":"Multifunkční pracovní bunda Guard 4 in 1","supplier":"Engelbert-Strauss","code":"","sizes":"dle požadavku","isEs":true,"image":"","narok":"2 ks / rok"},{"id":"s_07","kat":"07","name":"Reflexní vesta Warsaw Executive","supplier":"APP","code":"","sizes":"S, M, L, XL, XXL, XXXL","isEs":false,"image":"","narok":"2 ks / rok"},{"id":"s_12","kat":"12","name":"Unisex bezpečnostní reflexní vesta","supplier":"APP","code":"","sizes":"S, M, L, XL, XXL, XXXL","isEs":false,"image":"","narok":"2 ks / rok"},{"id":"s_04","kat":"04","name":"Bunda monter (řada HALI)","supplier":"APP","code":"","sizes":"36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64","isEs":false,"image":"","narok":""},{"id":"s_05","kat":"05","name":"Mikina (Astral)","supplier":"APP","code":"","sizes":"S, M, L, XL, XXL, XXXL","isEs":false,"image":"","narok":""},{"id":"s_06","kat":"06","name":"Triko reflexní","supplier":"APP","code":"","sizes":"S, M, L, XL, XXL, XXXL","isEs":false,"image":"","narok":""},{"id":"s_01","kat":"01","name":"Kalhoty s laclem","supplier":"APP","code":"","sizes":"36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64","isEs":false,"image":"","narok":""},{"id":"s_02","kat":"02","name":"Kalhoty bez laclu","supplier":"APP","code":"","sizes":"36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64","isEs":false,"image":"","narok":""},{"id":"s_03","kat":"03","name":"DAYBORO šortky","supplier":"APP","code":"","sizes":"36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64","isEs":false,"image":"","narok":""}]},{"name":"Ochrana nohou","items":[{"id":"s_19","kat":"19","name":"Obuv S1/S3 (dle požadavku)","supplier":"různí výrobci","code":"","sizes":"dle požadavku","isEs":false,"image":"","narok":"dle potřeby"}]}]}]};
+
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const r = await fetch('/api/data');
+    if (!r.ok) throw new Error('no server');
+    allData = await r.json();
+  } catch(_) {
+    allData = FALLBACK_DATA;
+  }
+  renderCatalog();
+  restoreTab();
+  updateCartUI();
+  initUserFields();
+});
+
+// ── Catalog render ─────────────────────────────────────────────────────────────
+function renderCatalog() {
+  if (allData.title)    document.getElementById('page-title').textContent    = allData.title;
+  if (allData.subtitle) document.getElementById('page-subtitle').textContent = allData.subtitle;
+
+  // Intro
+  if (allData.introText || allData.processSteps) {
+    let h = '';
+    if (allData.introText) h += `<div class="intro-box">${allData.introText}</div>`;
+    if (allData.processSteps && allData.processSteps.length) {
+      allData.processSteps = allData.processSteps.map(s => typeof s === 'string' ? {text: s, note: ''} : s);
+      h += `<h2>📋 Jak objednat OOPP</h2><ol class="process-list">`;
+      allData.processSteps.forEach(s => {
+        const note = s.note ? `<span class="step-note">${esc(s.note)}</span>` : '';
+        h += `<li><span>${s.text}${note}</span></li>`;
+      });
+      h += `</ol>`;
+      h += `<div class="email-vzor-wrap">
+        <div class="email-vzor-box">
+          <div class="email-vzor-hdr">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgb(0,100,180)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            Vzor e-mailu pro objednávku OOPP
+          </div>
+          <div class="email-vzor-body"><span class="lbl">Komu:</span> jmeno.prijmeni@engel-gematex.com
+<span class="lbl">Předmět:</span> Objednávka OOPP
+
+Dobrý den,
+
+zasílám objednávku OOPP:
+
+<span class="lbl">Oddělení:</span> [Vaše oddělení]
+<span class="lbl">Objednatel:</span> [Vaše jméno]
+
+<span class="lbl">Položky:</span>
+  • Kat. č. XX  –  Název položky  –  vel. XL  –  2 ks
+  • Kat. č. XX  –  Název položky  –  vel. 42  –  1 ks</div>
+        </div>
+        <div class="email-tip">
+          <strong>💡 Tip:</strong><br>
+          Použijte tlačítko <b>Košík → Kopírovat objednávku</b> vpravo dole — text e-mailu se automaticky zkopíruje do schránky se správným formátem. Stačí ho vložit do e-mailu.
+        </div>
+      </div>`;
+    }
+    document.getElementById('intro-section').innerHTML = h;
+  }
+
+  const nav     = document.getElementById('tab-nav');
+  const content = document.getElementById('tab-content');
+  nav.innerHTML = content.innerHTML = '';
+
+  (allData.departments || []).forEach((dept, i) => {
+    // Button
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn' + (i === 0 ? ' active' : '');
+    btn.dataset.tab = dept.id;
+    btn.textContent = (dept.icon ? dept.icon + ' ' : '') + (dept.shortName || dept.name);
+    btn.onclick = () => switchTab(dept.id);
+    nav.appendChild(btn);
+
+    // Panel
+    const panel = document.createElement('div');
+    panel.className = 'tab-panel' + (i === 0 ? ' active' : '');
+    panel.id = 'panel-' + dept.id;
+    panel.innerHTML = buildDeptHTML(dept);
+    content.appendChild(panel);
+  });
+}
+
+function buildDeptHTML(dept) {
+  let h = '';
+
+  // Nároky accordion
+  h += `<div class="narok-section">
+    <div class="narok-header" onclick="toggleNarok('${dept.id}')">
+      <div class="narok-title">📋 Přehled nároků OOPP — ${esc(dept.name)}</div>
+      <span id="narok-arrow-${dept.id}" style="font-size:1.1em;color:rgb(0,100,170)">▼</span>
+    </div>
+    <div class="narok-body" id="narok-body-${dept.id}">
+      <table class="narok-table">
+        <thead><tr>
+          <th class="narok-kat">Kat.&nbsp;č.</th>
+          <th>Položka OOPP</th>
+          <th style="width:160px;text-align:center">Nárok / Četnost</th>
+        </tr></thead>
+        <tbody>${buildNarokRows(dept)}</tbody>
+      </table>
+    </div>
+  </div>`;
+
+  h += `<h2>${esc(dept.name)}</h2>`;
+
+  if (dept.infoText) {
+    h += `<div class="info-sales"><b>Důležité informace:</b><br>${dept.infoText}</div>`;
+  }
+
+  if (dept.description) {
+    h += `<p>${dept.description}</p>`;
+  }
+
+  h += `<div class="table-scroll-wrap"><table class="item-table">
+    <thead><tr>
+      <th style="width:58px">Kat.&nbsp;č.</th>
+      <th>Položka OOPP</th>
+      <th class="dodav-th">Dodavatel</th>
+      <th class="kod-th">Výrobce&nbsp;/&nbsp;kód</th>
+      <th class="vel-th">Dostupné&nbsp;velikosti</th>
+      <th class="img-th">Ilustrace</th>
+      <th class="cart-th">Košík</th>
+    </tr></thead>
+    <tbody>`;
+
+  (dept.categories || []).forEach(cat => {
+    h += `<tr class="cat-row"><td colspan="7">${esc(cat.name)}</td></tr>`;
+    (cat.items || []).forEach(item => { h += buildItemRow(item); });
+  });
+
+  h += `</tbody></table></div>`;
+  return h;
+}
+
+function buildNarokRows(dept) {
+  let r = '';
+  (dept.categories || []).forEach(cat => {
+    (cat.items || []).forEach(item => {
+      r += `<tr>
+        <td class="narok-kat">${esc(item.kat)}</td>
+        <td>${esc(item.name)}</td>
+        <td style="text-align:center">${narokBadge(item.narok)}</td>
+      </tr>`;
+    });
+  });
+  return r;
+}
+
+function narokBadge(val) {
+  if (!val) return '<span class="narok-badge narok-prazdne">—</span>';
+  if (/rok/i.test(val))     return `<span class="narok-badge narok-rok">${esc(val)}</span>`;
+  if (/pot[rř]eby/i.test(val)) return `<span class="narok-badge narok-potreba">${esc(val)}</span>`;
+  return `<span class="narok-badge narok-pozadavku">${esc(val)}</span>`;
+}
+
+function buildItemRow(item) {
+  const imgHtml = item.image
+    ? `<img class="thumb-img" src="${esc(item.image)}" alt="${esc(item.name)}" onclick="openLightbox(this)" onerror="this.style.display='none'">`
+    : `<span class="no-img">—</span>`;
+
+  let cartHtml;
+  const itemJson = esc(JSON.stringify(item));
+  if (item.isEs) {
+    cartHtml = `<div class="cart-es-wrap">
+      <button class="cart-add-btn cart-add-es" onclick="openModal('${itemJson}')">+ Přidat (ES)</button>
+      <a class="es-size-link" href="https://www.strauss.com" target="_blank" rel="noopener">🔗 Tabulka vel.</a>
+    </div>`;
+  } else {
+    cartHtml = `<button class="cart-add-btn" onclick="openModal('${itemJson}')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      + Přidat</button>`;
+  }
+
+  return `<tr>
+    <td>${esc(item.kat)}</td>
+    <td>${esc(item.name)}</td>
+    <td style="font-size:.9em">${esc(item.supplier||'—')}</td>
+    <td style="font-size:.85em;color:#555">${esc(item.code||'—')}</td>
+    <td class="vel-td">${esc(item.sizes||'')}</td>
+    <td class="img-cell">${imgHtml}</td>
+    <td class="cart-td">${cartHtml}</td>
+  </tr>`;
+}
+
+// ── Tab switching ──────────────────────────────────────────────────────────────
+function switchTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const p = document.getElementById('panel-' + id);
+  const b = document.querySelector(`.tab-btn[data-tab="${id}"]`);
+  if (p) p.classList.add('active');
+  if (b) b.classList.add('active');
+  localStorage.setItem('oopp-active-tab', id);
+}
+function restoreTab() {
+  const t = localStorage.getItem('oopp-active-tab');
+  if (t && document.getElementById('panel-' + t)) switchTab(t);
+}
+
+function toggleNarok(dep) {
+  const body  = document.getElementById('narok-body-' + dep);
+  const arrow = document.getElementById('narok-arrow-' + dep);
+  if (!body) return;
+  body.classList.toggle('collapsed');
+  if (arrow) arrow.textContent = body.classList.contains('collapsed') ? '▲' : '▼';
+}
+
+// ── Cart modal ─────────────────────────────────────────────────────────────────
+function openModal(itemJson) {
+  modalItem = JSON.parse(itemJson);
+  document.getElementById('modal-item-name').textContent = modalItem.name;
+  document.getElementById('modal-item-sub').textContent  = 'Kat. č. ' + modalItem.kat;
+  const sizeField  = document.getElementById('modal-size-field');
+  const sizeSelect = document.getElementById('modal-size');
+  if (modalItem.isEs) {
+    sizeField.style.display = 'none';
+    document.getElementById('modal-item-sub').textContent += ' — Engelbert-Strauss';
+  } else {
+    sizeField.style.display = '';
+    sizeSelect.innerHTML = '';
+    (modalItem.sizes || 'UNI').split(',').map(s => s.trim()).filter(Boolean).forEach(s => {
+      const o = document.createElement('option');
+      o.value = o.textContent = s;
+      sizeSelect.appendChild(o);
+    });
+  }
+  document.getElementById('modal-qty').value = 1;
+  document.getElementById('cart-modal-overlay').classList.add('active');
+}
+
+function closeCartModal() {
+  document.getElementById('cart-modal-overlay').classList.remove('active');
+  modalItem = null;
+}
+
+function addToCartFromModal() {
+  if (!modalItem) return;
+  const qty = parseInt(document.getElementById('modal-qty').value) || 1;
+  const vel = modalItem.isEs ? 'dle strauss.com' : document.getElementById('modal-size').value;
+  cart.push({ kat: modalItem.kat, nazev: modalItem.name, vel, qty, isEs: !!modalItem.isEs });
+  saveCart();
+  updateCartUI();
+  closeCartModal();
+}
+
+// ── Cart ───────────────────────────────────────────────────────────────────────
+function saveCart() { localStorage.setItem('oopp-cart', JSON.stringify(cart)); }
+
+function updateCartUI() {
+  const total   = cart.reduce((s, i) => s + (i.qty || 1), 0);
+  const isEmpty = cart.length === 0;
+  const panel   = document.getElementById('cart-panel');
+  const wasHidden = panel.classList.contains('hidden');
+  document.getElementById('cart-badge').textContent = total;
+  panel.classList.toggle('hidden', isEmpty);
+  // collapse body when panel first appears
+  if (wasHidden && !isEmpty) {
+    document.getElementById('cart-body').classList.add('collapsed');
+    document.getElementById('cart-toggle-btn').textContent = '▲';
+  }
+  document.getElementById('cart-empty-msg').style.display = isEmpty ? 'block' : 'none';
+
+  const list = document.getElementById('cart-items-list');
+  list.innerHTML = '';
+  cart.forEach((item, idx) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="cart-item-kat">${esc(item.kat)}</span>
+      <span class="cart-item-name">${esc(item.nazev)}</span>
+      <span class="cart-item-vel">${esc(item.vel)}</span>
+      <span class="cart-item-qty">${item.qty}&nbsp;ks</span>
+      <button class="cart-item-del" onclick="removeItem(${idx})">✕</button>`;
+    list.appendChild(li);
+  });
+}
+
+function removeItem(idx) {
+  cart.splice(idx, 1);
+  saveCart();
+  updateCartUI();
+}
+
+function clearCart(btn) {
+  if (btn.dataset.confirm !== '1') {
+    btn.dataset.confirm = '1';
+    btn.textContent = 'Opravdu?';
+    btn.style.cssText += ';color:#c00;border-color:#c00';
+    setTimeout(() => {
+      btn.dataset.confirm = '';
+      btn.textContent = 'Vyprázdnit';
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 3000);
+    return;
+  }
+  cart = [];
+  saveCart();
+  updateCartUI();
+}
+
+function toggleCart() {
+  const body = document.getElementById('cart-body');
+  const btn  = document.getElementById('cart-toggle-btn');
+  body.classList.toggle('collapsed');
+  btn.textContent = body.classList.contains('collapsed') ? '▲' : '▼';
+}
+
+function initUserFields() {
+  const deptEl = document.getElementById('cart-dept');
+  const nameEl = document.getElementById('cart-name');
+  deptEl.value = localStorage.getItem('oopp-dept') || '';
+  nameEl.value = localStorage.getItem('oopp-name') || '';
+  deptEl.oninput = e => localStorage.setItem('oopp-dept', e.target.value);
+  nameEl.oninput = e => localStorage.setItem('oopp-name', e.target.value);
+}
+
+function copyCart() {
+  const dept = document.getElementById('cart-dept').value || '—';
+  const name = document.getElementById('cart-name').value || '—';
+  const date = new Date().toLocaleDateString('cs-CZ');
+  const subject = 'Objednávka OOPP';
+  const lines = [
+    `Předmět: ${subject}`,
+    '',
+    'Dobrý den,',
+    '',
+    'zasílám objednávku OOPP:',
+    '',
+    `Oddělení: ${dept}`,
+    `Objednatel: ${name}`,
+    `Datum: ${date}`,
+    '',
+    'Položky:'
+  ];
+  cart.forEach(item => {
+    const vel = item.isEs ? 'vel. dle strauss.com' : `vel. ${item.vel}`;
+    lines.push(`  • Kat. č. ${item.kat}  –  ${item.nazev}  –  ${vel}  –  ${item.qty} ks`);
+  });
+  const text = lines.join('\n');
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(showCopied);
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;opacity:0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); showCopied(); } catch(_) {}
+    document.body.removeChild(ta);
+  }
+}
+
+function showCopied() {
+  const m = document.getElementById('cart-copied-msg');
+  m.style.display = 'block';
+  setTimeout(() => { m.style.display = 'none'; }, 3000);
+}
+
+// ── Lightbox ───────────────────────────────────────────────────────────────────
+function openLightbox(img) {
+  document.getElementById('lightbox-img').src = img.src;
+  document.getElementById('lightbox-overlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeLightbox(); closeCartModal(); }
+});
+
+// ── Helpers ────────────────────────────────────────────────────────────────────
+function esc(s) {
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+</script>
+</body>
+</html>

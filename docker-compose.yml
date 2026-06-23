@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  katalog:
+    build: .
+    container_name: katalog-oopp
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - ADMIN_USERNAME=Gematex
+      - ADMIN_PASSWORD=Gematex 123
+      - ADMIN_RESET_CODE=Gematex-obnova
+    volumes:
+      - katalog_data:/app/data
+      - katalog_uploads:/app/public/uploads
+
+volumes:
+  katalog_data:
+  katalog_uploads:

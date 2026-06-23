@@ -1,0 +1,11 @@
+# Závislosti
+node_modules/
+
+# Data a nahrané obrázky (zůstávají na serveru ve Docker volumes)
+data/products.json
+data/auth.json
+public/uploads/
+
+# Systémové soubory
+.DS_Store
+Thumbs.db

@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin – Katalog OOPP</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;font-family:'Calibri','Arial',sans-serif;background:#f0f4f8;min-height:100vh}
+.topbar{background:#007bc2;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.topbar-title{font-size:1.1em;font-weight:700;display:flex;align-items:center;gap:10px}
+.topbar-actions{display:flex;gap:10px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:none;border-radius:8px;font-size:.88em;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s,transform .1s;text-decoration:none}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:#fff;color:#007bc2}.btn-primary:hover{background:#e8f4fb}
+.btn-success{background:#00a050;color:#fff}.btn-success:hover{background:#007a3c}
+.btn-danger{background:#e00;color:#fff}.btn-danger:hover{background:#b00}
+.btn-secondary{background:rgba(255,255,255,.2);color:#fff}.btn-secondary:hover{background:rgba(255,255,255,.35)}
+.btn-ghost{background:none;border:1.5px solid #ccc;color:#555}.btn-ghost:hover{border-color:#007bc2;color:#007bc2}
+.btn-sm{padding:5px 10px;font-size:.8em}
+.layout{display:flex;min-height:calc(100vh - 56px)}
+.sidebar{width:220px;background:#fff;border-right:1.5px solid #dde5ef;padding:16px 0;flex-shrink:0;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
+.sidebar-section{padding:8px 16px 4px;font-size:.75em;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.5px}
+.sidebar-item{display:flex;align-items:center;gap:8px;padding:9px 20px;cursor:pointer;color:#333;font-size:.9em;border-left:3px solid transparent;transition:background .12s}
+.sidebar-item:hover{background:#f0f4f8}
+.sidebar-item.active{background:#e8f4fb;color:#007bc2;border-left-color:#007bc2;font-weight:700}
+.main{flex:1;padding:24px;max-width:900px}
+.page{display:none}.page.active{display:block}
+.card{background:#fff;border-radius:12px;border:1.5px solid #dde5ef;padding:20px 24px;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.card-title{font-size:1.05em;font-weight:700;color:#003f7a;display:flex;align-items:center;gap:8px}
+.dept-block{margin-bottom:32px}
+.dept-heading{font-size:1.1em;font-weight:700;color:#007bc2;padding:10px 0 6px 0;border-bottom:2px solid #007bc2;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+.cat-block{margin-bottom:16px}
+.cat-heading{font-size:.88em;font-weight:700;color:#005090;background:#e8f4fb;padding:6px 12px;border-radius:6px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.cat-name-edit{font-size:.88em;border:1.5px solid #007bc2;border-radius:5px;padding:3px 8px;font-family:inherit;outline:none;min-width:180px}
+.items-grid{display:flex;flex-direction:column;gap:8px}
+.item-card{background:#f8fafd;border:1.5px solid #dde5ef;border-radius:9px;padding:12px 14px;display:flex;align-items:center;gap:12px;transition:border-color .15s}
+.item-card:hover{border-color:#007bc2}
+.item-img-wrap{width:62px;flex-shrink:0;text-align:center}
+.item-thumb{width:58px;height:48px;object-fit:cover;border-radius:7px;border:2px solid #007bc2;cursor:pointer}
+.item-img-placeholder{width:58px;height:48px;border:2px dashed rgba(0,123,194,.4);border-radius:7px;display:flex;align-items:center;justify-content:center;color:#aaa;font-size:.72em;cursor:pointer;background:rgba(0,123,194,.03);text-align:center;line-height:1.2}
+.item-info{flex:1;min-width:0}
+.item-name{font-weight:700;font-size:.93em;color:#222;margin-bottom:3px}
+.item-meta{font-size:.78em;color:#888;display:flex;flex-wrap:wrap;gap:6px}
+.item-meta span{background:#eef2f8;padding:1px 7px;border-radius:4px}
+.item-meta .es-tag{background:rgba(210,120,0,.12);color:rgb(160,80,0)}
+.item-actions{display:flex;gap:6px;flex-shrink:0}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-grid.cols3{grid-template-columns:1fr 1fr 1fr}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group.full{grid-column:1/-1}
+label.lbl{font-size:.82em;font-weight:700;color:#005090}
+input[type=text],input[type=number],textarea,select{font-family:inherit;font-size:.9em;padding:8px 10px;border:1.5px solid rgba(0,123,194,.3);border-radius:7px;outline:none;background:#f5f9fd;transition:border-color .15s}
+input:focus,textarea:focus,select:focus{border-color:#007bc2;box-shadow:0 0 0 3px rgba(0,123,194,.12)}
+textarea{resize:vertical;min-height:72px}
+.img-upload-area{border:2px dashed rgba(0,123,194,.4);border-radius:10px;padding:16px;text-align:center;cursor:pointer;background:rgba(0,123,194,.03);transition:background .15s,border-color .15s}
+.img-upload-area:hover,.img-upload-area.drag-over{background:rgba(0,123,194,.1);border-color:#007bc2}
+.img-upload-area img{max-width:140px;max-height:100px;border-radius:7px;border:2px solid #007bc2;margin:0 auto 8px;display:block}
+.img-upload-area p{margin:0;font-size:.82em;color:#888}
+.img-upload-area .change-link{font-size:.78em;color:#007bc2;cursor:pointer;text-decoration:underline}
+.checkbox-wrap{display:flex;align-items:center;gap:8px;padding:4px 0}
+.checkbox-wrap input[type=checkbox]{width:18px;height:18px;accent-color:#007bc2;cursor:pointer}
+.checkbox-wrap label{font-size:.9em;cursor:pointer}
+.overlay{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.5);align-items:center;justify-content:center}
+.overlay.open{display:flex;animation:fadeIn .15s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{background:#fff;border-radius:16px;padding:28px 30px 24px;width:92vw;max-width:560px;box-shadow:0 8px 48px rgba(0,0,0,.22);max-height:90vh;overflow-y:auto}
+.modal h3{margin:0 0 20px 0;font-size:1.1em;color:#003f7a;border-bottom:2px solid #007bc2;padding-bottom:10px}
+.modal-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:22px;padding-top:14px;border-top:1px solid #eee}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#007bc2;color:#fff;padding:11px 24px;border-radius:10px;font-weight:700;font-size:.92em;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+.save-bar{position:fixed;bottom:24px;right:24px;z-index:200;display:flex;gap:10px;align-items:center}
+.unsaved-dot{width:10px;height:10px;border-radius:50%;background:#e44;display:none}
+.unsaved-dot.visible{display:block}
+.add-cat-btn{margin-top:8px}
+.help-tip{font-size:.78em;color:#999;font-style:italic;margin-top:3px}
+.emoji-picker-wrap{position:relative;display:inline-block}
+.emoji-picker-btn{font-size:1.5em;padding:5px 12px;border:1.5px solid rgba(0,123,194,.3);border-radius:7px;cursor:pointer;background:#f5f9fd;min-width:56px;text-align:center;line-height:1.4;transition:border-color .15s;font-family:inherit}
+.emoji-picker-btn:hover{border-color:#007bc2;background:#e8f4fb}
+.emoji-picker-dropdown{display:none;position:absolute;top:calc(100% + 4px);left:0;z-index:400;background:#fff;border:1.5px solid #dde5ef;border-radius:10px;padding:8px 10px;box-shadow:0 4px 24px rgba(0,0,0,.18);width:260px;max-height:320px;overflow-y:auto}
+.emoji-picker-dropdown.open{display:block}
+.epick-label{font-size:.7em;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.5px;padding:6px 2px 2px;display:block}
+.epick-grid{display:flex;flex-wrap:wrap;gap:2px;margin-bottom:4px}
+.epick-opt{font-size:1.35em;padding:4px 5px;border-radius:6px;cursor:pointer;border:none;background:none;transition:background .1s;line-height:1;font-family:inherit}
+.epick-opt:hover{background:#e8f4fb}
+.epick-opt.sel{background:#cce8f7;outline:2px solid #007bc2}
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:150;background:#fff;border-top:1.5px solid #dde5ef;box-shadow:0 -2px 8px rgba(0,0,0,.1)}
+.mobile-nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 4px 10px;font-size:.65em;color:#888;background:none;border:none;cursor:pointer;font-family:inherit;gap:3px;border-top:3px solid transparent;transition:color .15s}
+.mobile-nav-btn.active{color:#007bc2;border-top-color:#007bc2}
+.mobile-nav-btn span:first-child{font-size:1.5em}
+@media(max-width:640px){
+  .sidebar{display:none}
+  .form-grid{grid-template-columns:1fr}
+  .main{padding:12px;padding-bottom:72px}
+  .mobile-nav{display:flex}
+}
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+  <div class="topbar-title">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+    Správa katalogu OOPP
+  </div>
+  <div class="topbar-actions">
+    <a href="/" target="_blank" class="btn btn-secondary">👁 Zobrazit katalog</a>
+    <a href="/admin/logout" class="btn btn-secondary">Odhlásit</a>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-section">Sekce</div>
+    <div class="sidebar-item active" onclick="showPage('products')" id="nav-products">📦 Produkty</div>
+    <div class="sidebar-item" onclick="showPage('naroky')" id="nav-naroky">📊 Přehled nároků</div>
+    <div class="sidebar-item" onclick="showPage('texts')" id="nav-texts">📝 Texty a popis</div>
+    <div class="sidebar-item" onclick="showPage('settings')" id="nav-settings">⚙️ Nastavení</div>
+  </div>
+
+  <!-- Mobile bottom nav -->
+  <nav class="mobile-nav">
+    <button class="mobile-nav-btn active" id="mnav-products" onclick="showPage('products')"><span>📦</span>Produkty</button>
+    <button class="mobile-nav-btn" id="mnav-naroky" onclick="showPage('naroky')"><span>📊</span>Nároky</button>
+    <button class="mobile-nav-btn" id="mnav-texts" onclick="showPage('texts')"><span>📝</span>Texty</button>
+    <button class="mobile-nav-btn" id="mnav-settings" onclick="showPage('settings')"><span>⚙️</span>Nastavení</button>
+  </nav>
+
+  <!-- Main content -->
+  <div class="main">
+
+    <!-- ── PRODUCTS PAGE ── -->
+    <div class="page active" id="page-products">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <h2 style="margin:0;color:#003f7a">Správa produktů</h2>
+        <button class="btn btn-primary" style="background:#007bc2;color:#fff" onclick="addDepartment()">+ Přidat oddělení</button>
+      </div>
+      <div style="font-size:.83em;color:#888;margin-bottom:16px">Klikněte na položku pro editaci, nebo přidejte novou. Názvy oddělení upravíte v sekci <b>Texty a popis</b>.</div>
+      <div id="products-container">Načítání…</div>
+    </div>
+
+    <!-- ── NAROKY PAGE ── -->
+    <div class="page" id="page-naroky">
+      <h2 style="margin:0 0 6px 0;color:#003f7a">Přehled nároků OOPP</h2>
+      <div style="font-size:.83em;color:#888;margin-bottom:20px">Editujte katalogová čísla a nárok / četnost výdeje. Změna katalogového čísla se automaticky projeví i v detailu produktu. Uložte tlačítkem <b>💾 Uložit vše</b>.</div>
+      <div id="naroky-container"></div>
+    </div>
+
+    <!-- ── TEXTS PAGE ── -->
+    <div class="page" id="page-texts">
+      <h2 style="margin:0 0 20px 0;color:#003f7a">Texty a popisy</h2>
+      <div class="card">
+        <div class="card-header"><div class="card-title">📄 Záhlaví katalogu</div></div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="lbl">Název katalogu</label>
+            <input type="text" id="txt-title" placeholder="Katalog OOPP">
+          </div>
+          <div class="form-group">
+            <label class="lbl">Podtitulek</label>
+            <input type="text" id="txt-subtitle" placeholder="Osobní ochranné pracovní prostředky">
+          </div>
+          <div class="form-group full">
+            <label class="lbl">Úvodní text (zobrazí se na začátku katalogu)</label>
+            <textarea id="txt-intro" rows="3" placeholder="Krátký popis účelu katalogu…"></textarea>
+            <div style="font-size:.76em;color:#888;margin-top:4px">Podporuje HTML: <code>&lt;b&gt;tučně&lt;/b&gt;</code>, <code>&lt;a href="https://..."&gt;odkaz&lt;/a&gt;</code></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">📋 Kroky objednávky</div></div>
+        <div class="help-tip" style="margin-bottom:12px">Každý řádek = jeden krok. Lze použít &lt;b&gt;tučné písmo&lt;/b&gt;.</div>
+        <div id="steps-list"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:10px" onclick="addStep()">+ Přidat krok</button>
+      </div>
+      <div class="card" id="dept-texts-card">
+        <div class="card-header"><div class="card-title">🏢 Popis oddělení</div></div>
+        <div id="dept-texts-list"></div>
+      </div>
+    </div>
+
+    <!-- ── SETTINGS PAGE ── -->
+    <div class="page" id="page-settings">
+      <h2 style="margin:0 0 20px 0;color:#003f7a">Nastavení</h2>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:16px">🔐 Změna hesla</div>
+        <div class="form-grid" style="max-width:420px">
+          <div class="form-group full">
+            <label class="lbl">Současné heslo</label>
+            <input type="password" id="pw-current" placeholder="Zadejte současné heslo" autocomplete="current-password">
+          </div>
+          <div class="form-group full">
+            <label class="lbl">Nové heslo</label>
+            <input type="password" id="pw-new" placeholder="Nové heslo (min. 4 znaky)" autocomplete="new-password">
+          </div>
+          <div class="form-group full">
+            <label class="lbl">Nové heslo znovu</label>
+            <input type="password" id="pw-confirm" placeholder="Zopakujte nové heslo" autocomplete="new-password">
+          </div>
+        </div>
+        <button class="btn btn-success" style="margin-top:12px" onclick="changePassword()">🔑 Změnit heslo</button>
+        <div style="margin-top:18px;padding:14px 18px;background:#f0f7ff;border:1.5px solid rgba(0,123,194,.3);border-radius:10px;font-size:.85em;color:#333;line-height:1.8">
+          <div style="font-weight:700;color:#005090;margin-bottom:8px;font-size:.95em">📋 Jak postupovat při zapomenutém heslu</div>
+          <ol style="margin:0;padding-left:20px">
+            <li>Otevřete přihlašovací stránku správy katalogu v prohlížeči.</li>
+            <li>Klikněte na tlačítko <b>„🔑 Zapomenuté heslo?"</b> pod přihlašovacím formulářem.</li>
+            <li>Zadejte <b>záchranný kód</b> (viz níže), nové heslo a potvrďte ho znovu.</li>
+            <li>Klikněte <b>„Nastavit nové heslo"</b> — systém heslo uloží a přesměruje vás na přihlášení.</li>
+            <li>Přihlaste se novým heslem.</li>
+          </ol>
+          <div style="margin-top:12px;padding:10px 14px;background:#fff;border:1.5px solid rgba(0,123,194,.2);border-radius:8px">
+            <span style="font-weight:700;color:#005090">🔑 Záchranný kód:</span>
+            <code style="background:#e8f4fb;padding:3px 10px;border-radius:5px;font-size:1.05em;margin-left:6px;letter-spacing:.5px">Gematex-obnova</code>
+            <div style="font-size:.82em;color:#888;margin-top:5px">Záchranný kód se nemění (nastavuje ho správce IT v Docker Compose). Uložte si ho na bezpečné místo.</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:14px">💾 Data katalogu</div>
+        <p style="font-size:.88em;color:#555;margin:0 0 14px">Data jsou uložena v souboru <code>data/products.json</code> na serveru. Obrazky jsou ve složce <code>public/uploads/</code>.</p>
+        <button class="btn btn-ghost" onclick="exportData()">⬇ Stáhnout zálohu (JSON)</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── Item edit modal ── -->
+<div class="overlay" id="item-modal">
+  <div class="modal">
+    <h3 id="modal-title">Editace položky</h3>
+    <input type="hidden" id="edit-dept-id">
+    <input type="hidden" id="edit-cat-idx">
+    <input type="hidden" id="edit-item-idx">
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="lbl">Katalogové číslo *</label>
+        <input type="text" id="edit-kat" placeholder="např. 08">
+      </div>
+      <div class="form-group">
+        <label class="lbl">Název položky *</label>
+        <input type="text" id="edit-name" placeholder="Název OOPP">
+      </div>
+      <div class="form-group">
+        <label class="lbl">Dodavatel</label>
+        <input type="text" id="edit-supplier" placeholder="APP / Petzl / UVEX…">
+      </div>
+      <div class="form-group">
+        <label class="lbl">Výrobce / kód produktu</label>
+        <input type="text" id="edit-code" placeholder="výrobní kód nebo číslo">
+      </div>
+      <div class="form-group">
+        <label class="lbl">Dostupné velikosti</label>
+        <input type="text" id="edit-sizes" placeholder="S, M, L, XL  nebo  36, 38, 40…">
+        <div class="help-tip">Oddělte čárkou. Pro jedinečnou velikost napište UNI.</div>
+      </div>
+      <div class="form-group">
+        <label class="lbl">Nárok / četnost výdeje</label>
+        <input type="text" id="edit-narok" placeholder="2 ks / rok  nebo  dle potřeby">
+      </div>
+      <div class="form-group full">
+        <label class="lbl">Obrázek položky</label>
+        <div class="img-upload-area" id="img-drop-zone" onclick="triggerImgPick()" ondragover="dragOver(event)" ondrop="dropImg(event)">
+          <img id="edit-img-preview" src="" alt="" style="display:none">
+          <p id="img-placeholder-text">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#007bc2" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><br>
+            Klikněte pro nahrání obrázku nebo přetáhněte soubor sem<br>
+            <span style="font-size:.8em">(JPG, PNG, WEBP – max 10 MB)</span>
+          </p>
+          <span class="change-link" id="img-change-link" style="display:none" onclick="event.stopPropagation();triggerImgPick()">Změnit obrázek</span>
+          <button class="btn btn-ghost btn-sm" id="img-remove-btn" style="display:none;margin-top:6px" onclick="event.stopPropagation();removeImg()">Odebrat obrázek</button>
+        </div>
+        <input type="file" id="img-file-input" accept="image/*" style="display:none" onchange="uploadImg(this)">
+        <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
+          <input type="text" id="edit-img-url" placeholder="nebo vložte URL obrázku…" style="flex:1">
+          <button class="btn btn-ghost btn-sm" onclick="applyImgUrl()">Použít URL</button>
+        </div>
+        <input type="hidden" id="edit-img">
+      </div>
+      <div class="form-group full">
+        <div class="checkbox-wrap">
+          <input type="checkbox" id="edit-is-es">
+          <label for="edit-is-es">Položka Engelbert-Strauss (velikost dle webu výrobce)</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-btns">
+      <button class="btn btn-danger btn-sm" id="modal-delete-btn" onclick="deleteItem()">🗑 Smazat</button>
+      <button class="btn btn-ghost" onclick="closeModal()">Zrušit</button>
+      <button class="btn btn-success" onclick="saveItem()">✓ Uložit položku</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Add item modal ── -->
+<div class="overlay" id="add-modal">
+  <div class="modal">
+    <h3>Přidat novou položku</h3>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="lbl">Oddělení *</label>
+        <select id="add-dept-sel"></select>
+      </div>
+      <div class="form-group">
+        <label class="lbl">Kategorie *</label>
+        <select id="add-cat-sel"></select>
+      </div>
+      <div class="form-group">
+        <label class="lbl">Kat. číslo *</label>
+        <input type="text" id="add-kat" placeholder="08">
+      </div>
+      <div class="form-group">
+        <label class="lbl">Název *</label>
+        <input type="text" id="add-name" placeholder="Název OOPP">
+      </div>
+      <div class="form-group">
+        <label class="lbl">Dodavatel</label>
+        <input type="text" id="add-supplier" placeholder="APP">
+      </div>
+      <div class="form-group">
+        <label class="lbl">Velikosti</label>
+        <input type="text" id="add-sizes" placeholder="S, M, L, XL">
+      </div>
+      <div class="form-group">
+        <label class="lbl">Nárok / četnost</label>
+        <input type="text" id="add-narok" placeholder="2 ks / rok">
+      </div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" onclick="closeAddModal()">Zrušit</button>
+      <button class="btn btn-success" onclick="confirmAddItem()">+ Přidat položku</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Confirm modal ── -->
+<div class="overlay" id="confirm-modal">
+  <div class="modal" style="max-width:420px">
+    <h3 id="confirm-title" style="color:#c00;border-bottom-color:#c00">Potvrdit akci</h3>
+    <p id="confirm-message" style="font-size:.95em;color:#333;margin:0 0 4px"></p>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" onclick="confirmCancel()">Zrušit</button>
+      <button class="btn btn-danger" id="confirm-ok-btn" onclick="confirmOk()">Smazat</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Add department modal ── -->
+<div class="overlay" id="add-dept-modal">
+  <div class="modal" style="max-width:440px">
+    <h3>Přidat nové oddělení</h3>
+    <div class="form-grid">
+      <div class="form-group full">
+        <label class="lbl">Celý název oddělení *</label>
+        <input type="text" id="new-dept-name" placeholder="např. Výroba / Kvalita / Logistika"
+          onkeydown="if(event.key==='Enter')document.getElementById('new-dept-short').focus()">
+      </div>
+      <div class="form-group full">
+        <label class="lbl">Krátký název záložky *</label>
+        <input type="text" id="new-dept-short" placeholder="např. Výroba"
+          onkeydown="if(event.key==='Enter')confirmAddDept()">
+        <div class="help-tip">Zobrazí se na záložce v katalogu. Doporučujeme max. 10 znaků.</div>
+      </div>
+    </div>
+    <p style="font-size:.82em;color:#888;margin:10px 0 0">Ikonu oddělení vyberete po přidání v sekci <b>Texty a popis</b>.</p>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" onclick="closeAddDeptModal()">Zrušit</button>
+      <button class="btn btn-success" onclick="confirmAddDept()">+ Přidat oddělení</button>
+    </div>
+  </div>
+</div>
+
+<!-- Save bar -->
+<div class="save-bar">
+  <span class="unsaved-dot" id="unsaved-dot"></span>
+  <button class="btn btn-success" onclick="saveAll()" id="save-btn" style="box-shadow:0 4px 16px rgba(0,160,80,.3)">💾 Uložit vše</button>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+let data = {};
+let unsaved = false;
+let editingDeptId = null, editingCatIdx = -1, editingItemIdx = -1;
+
+const EMOJI_GROUPS = [
+  { label: 'Práce & výroba',       emojis: ['⚙️','🔧','🔨','🛠️','🔩','🏭','🧰','🪛','🪚','⛏️','🔗','⚡','🔥','💡','🔆'] },
+  { label: 'Svářeč & speciální',   emojis: ['🧑‍🏭','🔥','⚡','💥','🌡️','🛢️','🔋','🪝','🧲','🔌','🪜','🧱'] },
+  { label: 'Bezpečnost & OOPP',    emojis: ['🦺','⛑️','🧤','👷','🥽','🧯','🔒','🛡️','🚨','⚠️','🚧','✋'] },
+  { label: 'Doprava & logistika',  emojis: ['🚗','🚛','🚚','🚐','🏎️','✈️','📦','🚜','🛺','🚁','🛳️','🚂'] },
+  { label: 'Kancelář & admin',     emojis: ['🏢','📋','📊','💼','🗂️','📁','🖥️','📱','🖨️','📧','📞','🗓️'] },
+  { label: 'Ostatní',              emojis: ['⭐','✅','🎯','📌','🔔','🏆','💪','🌍','🤝','👥','📣','🎖️'] },
+];
+
+// ── Init ───────────────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const r = await fetch('/api/data');
+    data = await r.json();
+    data.processSteps = (data.processSteps || []).map(s => typeof s === 'string' ? {text: s, note: ''} : s);
+    renderAll();
+  } catch(e) {
+    showToast('Chyba načítání: ' + e.message, true);
+  }
+});
+
+// ── Page nav ───────────────────────────────────────────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.mobile-nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.getElementById('nav-' + id).classList.add('active');
+  const mb = document.getElementById('mnav-' + id);
+  if (mb) mb.classList.add('active');
+}
+
+// ── Render all ────────────────────────────────────────────────────────────────
+function renderAll() {
+  renderProducts();
+  renderTexts();
+  renderNaroky();
+}
+
+// ── PRODUCTS ───────────────────────────────────────────────────────────────────
+function renderProducts() {
+  const container = document.getElementById('products-container');
+  container.innerHTML = '';
+
+  (data.departments || []).forEach((dept) => {
+    const block = document.createElement('div');
+    block.className = 'dept-block';
+
+    const heading = document.createElement('div');
+    heading.className = 'dept-heading';
+    const deptIdx = data.departments.indexOf(dept);
+    heading.innerHTML = `
+      <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0">
+        <span style="font-size:1.3em">${dept.icon || ''}</span>
+        <div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:0">
+          <div style="font-size:.7em;color:#999;font-weight:400;margin-bottom:1px">Celý název oddělení</div>
+          <input type="text" value="${esc(dept.name)}"
+            style="font-weight:700;font-size:.95em;color:#003f7a;border:1.5px solid rgba(0,123,194,.35);background:#f5f9fd;padding:4px 8px;border-radius:6px;width:100%;box-sizing:border-box"
+            onfocus="this.style.borderColor='#007bc2';this.style.boxShadow='0 0 0 3px rgba(0,123,194,.12)'"
+            onblur="this.style.borderColor='rgba(0,123,194,.35)';this.style.boxShadow=''"
+            onchange="renameDept('${dept.id}','name',this.value)" placeholder="Celý název oddělení">
+          <div style="font-size:.7em;color:#999;font-weight:400;margin-top:4px;margin-bottom:1px">Krátký název záložky</div>
+          <input type="text" value="${esc(dept.shortName||'')}"
+            style="font-size:.82em;color:#555;border:1.5px solid rgba(0,123,194,.35);background:#f5f9fd;padding:3px 8px;border-radius:6px;width:100%;box-sizing:border-box"
+            onfocus="this.style.borderColor='#007bc2';this.style.boxShadow='0 0 0 3px rgba(0,123,194,.12)'"
+            onblur="this.style.borderColor='rgba(0,123,194,.35)';this.style.boxShadow=''"
+            onchange="renameDept('${dept.id}','shortName',this.value)" placeholder="Krátký název záložky">
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
+        <button class="btn btn-ghost btn-sm" onclick="moveDept('${dept.id}',-1)" title="Přesunout nahoru" ${deptIdx === 0 ? 'disabled' : ''} style="padding:4px 8px;font-size:1em">↑</button>
+        <button class="btn btn-ghost btn-sm" onclick="moveDept('${dept.id}',1)" title="Přesunout dolů" ${deptIdx === data.departments.length-1 ? 'disabled' : ''} style="padding:4px 8px;font-size:1em">↓</button>
+        <button class="btn btn-primary btn-sm" onclick="openAddModal('${dept.id}')">+ Přidat položku</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteDept('${dept.id}')" title="Smazat oddělení">🗑 Smazat oddělení</button>
+      </div>`;
+    block.appendChild(heading);
+
+    (dept.categories || []).forEach((cat, catIdx) => {
+      const catBlock = document.createElement('div');
+      catBlock.className = 'cat-block';
+      const catCount = dept.categories.length;
+      catBlock.innerHTML = `<div class="cat-heading">
+        <div style="display:flex;align-items:center;gap:8px;flex:1">
+          <span style="color:#999;font-size:.8em">Kategorie:</span>
+          <input class="cat-name-edit" type="text" value="${esc(cat.name)}"
+            onchange="renameCat('${dept.id}',${catIdx},this.value)">
+        </div>
+        <div style="display:flex;gap:4px;align-items:center">
+          <button class="btn btn-ghost btn-sm" onclick="moveCat('${dept.id}',${catIdx},-1)" title="Přesunout kategorii nahoru" ${catIdx===0?'disabled':''} style="padding:3px 7px">↑</button>
+          <button class="btn btn-ghost btn-sm" onclick="moveCat('${dept.id}',${catIdx},1)" title="Přesunout kategorii dolů" ${catIdx===catCount-1?'disabled':''} style="padding:3px 7px">↓</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteCat('${dept.id}',${catIdx})" title="Smazat kategorii">🗑</button>
+        </div>
+      </div>`;
+
+      const grid = document.createElement('div');
+      grid.className = 'items-grid';
+
+      (cat.items || []).forEach((item, itemIdx) => {
+        grid.appendChild(buildItemCard(item, dept.id, catIdx, itemIdx));
+      });
+
+      catBlock.appendChild(grid);
+
+      const addCatItem = document.createElement('button');
+      addCatItem.className = 'btn btn-ghost btn-sm add-cat-btn';
+      addCatItem.textContent = '+ Přidat položku do této kategorie';
+      addCatItem.onclick = () => openAddModalInCat(dept.id, catIdx);
+      catBlock.appendChild(addCatItem);
+
+      const pasteBtn = document.createElement('button');
+      pasteBtn.className = 'btn btn-ghost btn-sm add-cat-btn paste-item-btn';
+      pasteBtn.id = `paste-btn-${dept.id}-${catIdx}`;
+      pasteBtn.style.cssText = 'display:none;margin-left:6px;border-color:#007bc2;color:#007bc2';
+      pasteBtn.textContent = '📋 Vložit zkopírovanou položku';
+      pasteBtn.onclick = () => pasteItem(dept.id, catIdx);
+      catBlock.appendChild(pasteBtn);
+
+      block.appendChild(catBlock);
+    });
+
+    // Add category inline form
+    const addCatWrap = document.createElement('div');
+    addCatWrap.style.cssText = 'margin-top:8px;display:flex;align-items:center;gap:6px';
+    addCatWrap.id = 'add-cat-wrap-' + dept.id;
+    addCatWrap.innerHTML = `
+      <button class="btn btn-ghost btn-sm" onclick="showAddCatForm('${dept.id}')">+ Přidat novou kategorii</button>
+      <span id="add-cat-form-${dept.id}" style="display:none;display:none;align-items:center;gap:6px">
+        <input type="text" id="add-cat-input-${dept.id}" placeholder="Název kategorie…"
+          style="padding:5px 10px;font-size:.85em;border:1.5px solid #007bc2;border-radius:6px;outline:none;min-width:200px"
+          onkeydown="if(event.key==='Enter')confirmAddCat('${dept.id}');if(event.key==='Escape')hideAddCatForm('${dept.id}')">
+        <button class="btn btn-success btn-sm" onclick="confirmAddCat('${dept.id}')">✓ Přidat</button>
+        <button class="btn btn-ghost btn-sm" onclick="hideAddCatForm('${dept.id}')">✕</button>
+      </span>`;
+    block.appendChild(addCatWrap);
+
+    container.appendChild(block);
+  });
+}
+
+function buildItemCard(item, deptId, catIdx, itemIdx) {
+  const card = document.createElement('div');
+  card.className = 'item-card';
+
+  let imgHtml;
+  if (item.image) {
+    imgHtml = `<img class="item-thumb" src="${esc(item.image)}" alt="${esc(item.name)}"
+      onerror="this.style.display='none'" onclick="openEditModal('${deptId}',${catIdx},${itemIdx})">`;
+  } else {
+    imgHtml = `<div class="item-img-placeholder" onclick="openEditModal('${deptId}',${catIdx},${itemIdx})">
+      📷<br>bez<br>obr.
+    </div>`;
+  }
+
+  const tags = [
+    item.sizes ? `<span>${esc(item.sizes)}</span>` : '',
+    item.supplier ? `<span>${esc(item.supplier)}</span>` : '',
+    item.code ? `<span>${esc(item.code)}</span>` : '',
+    item.narok ? `<span>${esc(item.narok)}</span>` : '',
+    item.isEs ? '<span class="es-tag">Engelbert-Strauss</span>' : '',
+  ].filter(Boolean).join('');
+
+  card.innerHTML = `
+    <div class="item-img-wrap">${imgHtml}</div>
+    <div class="item-info">
+      <div class="item-name">Kat.&nbsp;č.&nbsp;${esc(item.kat)}&nbsp;&nbsp;${esc(item.name)}</div>
+      <div class="item-meta">${tags}</div>
+    </div>
+    <div class="item-actions">
+      <div style="display:flex;gap:3px;margin-bottom:4px">
+        <button class="btn btn-ghost btn-sm" onclick="moveItem('${deptId}',${catIdx},${itemIdx},-1)" title="Přesunout nahoru" ${itemIdx===0?'disabled':''} style="padding:3px 7px;font-size:.9em">↑</button>
+        <button class="btn btn-ghost btn-sm" onclick="moveItem('${deptId}',${catIdx},${itemIdx},1)" title="Přesunout dolů" style="padding:3px 7px;font-size:.9em">↓</button>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="openEditModal('${deptId}',${catIdx},${itemIdx})">✏️ Upravit</button>
+      <button class="btn btn-ghost btn-sm" style="margin-top:4px;font-size:.75em" onclick="copyItem('${deptId}',${catIdx},${itemIdx})" title="Zkopírovat položku do jiné kategorie">📋 Kopírovat</button>
+    </div>`;
+  return card;
+}
+
+// ── Edit modal ────────────────────────────────────────────────────────────────
+function openEditModal(deptId, catIdx, itemIdx) {
+  const item = getDeptById(deptId).categories[catIdx].items[itemIdx];
+  editingDeptId  = deptId;
+  editingCatIdx  = catIdx;
+  editingItemIdx = itemIdx;
+
+  document.getElementById('modal-title').textContent = 'Upravit: ' + item.name;
+  document.getElementById('edit-kat').value      = item.kat      || '';
+  document.getElementById('edit-name').value     = item.name     || '';
+  document.getElementById('edit-supplier').value = item.supplier || '';
+  document.getElementById('edit-code').value     = item.code     || '';
+  document.getElementById('edit-sizes').value    = item.sizes    || '';
+  document.getElementById('edit-narok').value    = item.narok    || '';
+  document.getElementById('edit-is-es').checked  = !!item.isEs;
+  document.getElementById('edit-img').value      = item.image    || '';
+  document.getElementById('edit-img-url').value  = item.image    || '';
+  setImgPreview(item.image || '');
+
+  document.getElementById('modal-delete-btn').style.display = '';
+  document.getElementById('item-modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('item-modal').classList.remove('open');
+  editingDeptId = null; editingCatIdx = -1; editingItemIdx = -1;
+}
+
+function saveItem() {
+  const kat  = document.getElementById('edit-kat').value.trim();
+  const name = document.getElementById('edit-name').value.trim();
+  if (!kat || !name) { showToast('Katalogové číslo a název jsou povinné!', true); return; }
+
+  const item = getDeptById(editingDeptId).categories[editingCatIdx].items[editingItemIdx];
+  item.kat      = kat;
+  item.name     = name;
+  item.supplier = document.getElementById('edit-supplier').value.trim();
+  item.code     = document.getElementById('edit-code').value.trim();
+  item.sizes    = document.getElementById('edit-sizes').value.trim();
+  item.narok    = document.getElementById('edit-narok').value.trim();
+  item.isEs     = document.getElementById('edit-is-es').checked;
+  item.image    = document.getElementById('edit-img').value.trim();
+
+  // Synchronizace názvu a obrázku do všech položek se stejným kat číslem
+  let synced = 0;
+  (data.departments || []).forEach(dept => {
+    (dept.categories || []).forEach(cat => {
+      (cat.items || []).forEach(other => {
+        if (other !== item && other.kat === kat) {
+          other.name  = item.name;
+          other.image = item.image;
+          synced++;
+        }
+      });
+    });
+  });
+
+  closeModal();
+  markUnsaved();
+  renderProducts();
+  if (synced > 0) {
+    showToast(`Položka uložena. Synchronizováno do ${synced} dalších položek se stejným kat. č.`);
+  } else {
+    showToast('Položka uložena. Nezapomeňte uložit vše.');
+  }
+}
+
+function deleteItem() {
+  const item = getDeptById(editingDeptId).categories[editingCatIdx].items[editingItemIdx];
+  showConfirm(`Opravdu smazat položku „${item.name}"?`, 'Smazat', () => {
+    const dept = getDeptById(editingDeptId);
+    dept.categories[editingCatIdx].items.splice(editingItemIdx, 1);
+    closeModal();
+    markUnsaved();
+    renderProducts();
+    showToast('Položka smazána.');
+  });
+}
+
+// ── Image handling ─────────────────────────────────────────────────────────────
+function triggerImgPick() { document.getElementById('img-file-input').click(); }
+
+function setImgPreview(url) {
+  const preview = document.getElementById('edit-img-preview');
+  const placeholder = document.getElementById('img-placeholder-text');
+  const changeLink = document.getElementById('img-change-link');
+  const removeBtn = document.getElementById('img-remove-btn');
+  if (url) {
+    preview.src = url; preview.style.display = 'block';
+    placeholder.style.display = 'none'; changeLink.style.display = 'inline';
+    removeBtn.style.display = 'inline-block';
+  } else {
+    preview.src = ''; preview.style.display = 'none';
+    placeholder.style.display = 'block'; changeLink.style.display = 'none';
+    removeBtn.style.display = 'none';
+  }
+}
+
+async function removeImg() {
+  const url = document.getElementById('edit-img').value.trim();
+  // if it's an uploaded file on this server, delete it from disk too
+  if (url && url.startsWith('/uploads/')) {
+    const filename = url.split('/').pop();
+    try {
+      await fetch('/api/upload/' + encodeURIComponent(filename), { method: 'DELETE' });
+    } catch(_) {}
+  }
+  document.getElementById('edit-img').value = '';
+  document.getElementById('edit-img-url').value = '';
+  setImgPreview('');
+  showToast('Obrázek odstraněn. Nezapomeňte uložit vše.');
+}
+
+async function uploadImg(input) {
+  if (!input.files || !input.files[0]) return;
+  const fd = new FormData();
+  fd.append('image', input.files[0]);
+  showToast('Nahrávám obrázek…');
+  try {
+    const r = await fetch('/api/upload', { method: 'POST', body: fd });
+    const j = await r.json();
+    if (j.url) {
+      document.getElementById('edit-img').value = j.url;
+      document.getElementById('edit-img-url').value = j.url;
+      setImgPreview(j.url);
+      showToast('Obrázek nahrán!');
+    } else { showToast('Chyba nahrávání: ' + (j.error || '?'), true); }
+  } catch(e) { showToast('Chyba: ' + e.message, true); }
+  input.value = '';
+}
+
+function applyImgUrl() {
+  const url = document.getElementById('edit-img-url').value.trim();
+  document.getElementById('edit-img').value = url;
+  setImgPreview(url);
+}
+
+function dragOver(e) { e.preventDefault(); document.getElementById('img-drop-zone').classList.add('drag-over'); }
+function dropImg(e) {
+  e.preventDefault();
+  document.getElementById('img-drop-zone').classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (!file || !file.type.startsWith('image/')) { showToast('Pouze obrazové soubory!', true); return; }
+  const fakeInput = { files: [file] };
+  uploadImg(fakeInput);
+}
+
+// ── Add item modal ────────────────────────────────────────────────────────────
+function openAddModal(deptId) {
+  fillAddDeptSel(deptId);
+  document.getElementById('add-modal').classList.add('open');
+}
+function openAddModalInCat(deptId, catIdx) {
+  fillAddDeptSel(deptId);
+  document.getElementById('add-cat-sel').value = catIdx;
+  document.getElementById('add-modal').classList.add('open');
+}
+function closeAddModal() { document.getElementById('add-modal').classList.remove('open'); }
+
+function fillAddDeptSel(selectedDeptId) {
+  const deptSel = document.getElementById('add-dept-sel');
+  deptSel.innerHTML = '';
+  (data.departments || []).forEach(d => {
+    const o = document.createElement('option');
+    o.value = d.id; o.textContent = d.name;
+    if (d.id === selectedDeptId) o.selected = true;
+    deptSel.appendChild(o);
+  });
+  updateAddCatSel();
+  deptSel.onchange = updateAddCatSel;
+  ['add-kat','add-name','add-supplier','add-sizes','add-narok'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+}
+
+function updateAddCatSel() {
+  const deptId = document.getElementById('add-dept-sel').value;
+  const dept = getDeptById(deptId);
+  const catSel = document.getElementById('add-cat-sel');
+  catSel.innerHTML = '';
+  (dept ? dept.categories : []).forEach((c, i) => {
+    const o = document.createElement('option'); o.value = i; o.textContent = c.name; catSel.appendChild(o);
+  });
+}
+
+function confirmAddItem() {
+  const deptId = document.getElementById('add-dept-sel').value;
+  const catIdx = parseInt(document.getElementById('add-cat-sel').value);
+  const kat    = document.getElementById('add-kat').value.trim();
+  const name   = document.getElementById('add-name').value.trim();
+  if (!kat || !name) { showToast('Vyplňte katalogové číslo a název!', true); return; }
+
+  const dept = getDeptById(deptId);
+  const newItem = {
+    id: deptId + '_' + kat + '_' + Date.now(),
+    kat, name,
+    supplier: document.getElementById('add-supplier').value.trim(),
+    code: '',
+    sizes: document.getElementById('add-sizes').value.trim() || 'UNI',
+    isEs: false,
+    image: '',
+    narok: document.getElementById('add-narok').value.trim()
+  };
+  dept.categories[catIdx].items.push(newItem);
+  closeAddModal();
+  markUnsaved();
+  renderProducts();
+  showToast('Položka přidána. Nezapomeňte uložit vše.');
+}
+
+// ── Categories ────────────────────────────────────────────────────────────────
+function showAddCatForm(deptId) {
+  const form = document.getElementById('add-cat-form-' + deptId);
+  const btn = form.previousElementSibling;
+  btn.style.display = 'none';
+  form.style.display = 'flex';
+  document.getElementById('add-cat-input-' + deptId).focus();
+}
+
+function hideAddCatForm(deptId) {
+  const form = document.getElementById('add-cat-form-' + deptId);
+  const btn = form.previousElementSibling;
+  form.style.display = 'none';
+  btn.style.display = '';
+  document.getElementById('add-cat-input-' + deptId).value = '';
+}
+
+// ── Copy / Paste položky ──────────────────────────────────────────────────────
+let copiedItem = null;
+
+function copyItem(deptId, catIdx, itemIdx) {
+  const src = getDeptById(deptId).categories[catIdx].items[itemIdx];
+  copiedItem = JSON.parse(JSON.stringify(src));
+  // Zobraz všechna tlačítka Vložit
+  document.querySelectorAll('.paste-item-btn').forEach(btn => btn.style.display = '');
+  showToast(`Položka „${src.name}" zkopírována. Klikněte na Vložit v cílové kategorii.`);
+}
+
+function pasteItem(deptId, catIdx) {
+  if (!copiedItem) return;
+  const newItem = JSON.parse(JSON.stringify(copiedItem));
+  // Nové unikátní ID
+  newItem.id = deptId.substring(0,1) + '_' + Date.now();
+  getDeptById(deptId).categories[catIdx].items.push(newItem);
+  markUnsaved();
+  renderProducts();
+  showToast(`Položka „${newItem.name}" vložena.`);
+}
+
+function confirmAddCat(deptId) {
+  const input = document.getElementById('add-cat-input-' + deptId);
+  const name = input.value.trim();
+  if (!name) { input.focus(); return; }
+  getDeptById(deptId).categories.push({ name, items: [] });
+  markUnsaved();
+  renderProducts();
+  showToast('Kategorie přidána.');
+}
+
+function renameCat(deptId, catIdx, newName) {
+  const oldName = getDeptById(deptId).categories[catIdx].name;
+  // Synchronizace názvu kategorie napříč všemi odděleními
+  let synced = 0;
+  (data.departments || []).forEach(dept => {
+    (dept.categories || []).forEach(cat => {
+      if (cat.name === oldName) {
+        cat.name = newName;
+        synced++;
+      }
+    });
+  });
+  markUnsaved();
+  // Přerenderuj vstupy aby se zobrazil nový název i v ostatních odděleních
+  if (synced > 1) renderProducts();
+}
+
+function deleteCat(deptId, catIdx) {
+  const dept = getDeptById(deptId);
+  const cat  = dept.categories[catIdx];
+  showConfirm(`Smazat kategorii „${cat.name}" a všechny její položky (${cat.items.length} ks)?`, 'Smazat', () => {
+    dept.categories.splice(catIdx, 1);
+    markUnsaved();
+    renderProducts();
+    showToast('Kategorie smazána.');
+  });
+}
+
+// ── TEXTS ─────────────────────────────────────────────────────────────────────
+function renderTexts() {
+  document.getElementById('txt-title').value    = data.title    || '';
+  document.getElementById('txt-subtitle').value = data.subtitle || '';
+  document.getElementById('txt-intro').value    = data.introText || '';
+
+  // Steps
+  const stepsList = document.getElementById('steps-list');
+  stepsList.innerHTML = '';
+  (data.processSteps || []).forEach((step, i) => {
+    const row = document.createElement('div');
+    row.style.cssText = 'margin-bottom:12px;padding:10px 12px;background:#f5f9fd;border:1.5px solid rgba(0,123,194,.2);border-radius:8px';
+    row.innerHTML = `<div style="display:flex;gap:8px;align-items:center;margin-bottom:6px">
+        <span style="font-weight:700;color:#007bc2;min-width:20px">${i+1}.</span>
+        <input type="text" value="${esc(step.text||'')}" style="flex:1" onchange="updateStep(${i},this.value)" placeholder="Text kroku">
+        <button class="btn btn-danger btn-sm" onclick="removeStep(${i})">✕</button>
+      </div>
+      <div style="display:flex;gap:8px;align-items:flex-start;padding-left:28px">
+        <span style="font-size:.78em;color:#999;padding-top:9px;white-space:nowrap">↳ poznámka:</span>
+        <textarea rows="2" style="flex:1;font-size:.84em" placeholder="Doplňující vysvětlení pod krokem (nepovinné)…" onchange="updateStepNote(${i},this.value)">${esc(step.note||'')}</textarea>
+      </div>`;
+    stepsList.appendChild(row);
+  });
+
+  // Dept descriptions
+  const deptList = document.getElementById('dept-texts-list');
+  deptList.innerHTML = '';
+  (data.departments || []).forEach((dept) => {
+    const block = document.createElement('div');
+    block.style.marginBottom = '20px';
+    block.innerHTML = `<div style="font-weight:700;color:#005090;margin-bottom:8px">${dept.icon||''} ${esc(dept.name)}</div>
+      <div class="form-grid cols3">
+        <div class="form-group">
+          <label class="lbl">Ikona (emoji)</label>
+          ${buildEmojiPickerHtml(dept.id, dept.icon||'')}
+        </div>
+        <div class="form-group">
+          <label class="lbl">Krátký název (záložka v katalogu)</label>
+          <input type="text" id="dtxt-short-${dept.id}" value="${esc(dept.shortName||'')}" placeholder="Výroba">
+        </div>
+        <div class="form-group">
+          <label class="lbl">Celý název oddělení</label>
+          <input type="text" id="dtxt-name-${dept.id}" value="${esc(dept.name||'')}" placeholder="Výroba / Kvalita / Logistika">
+        </div>
+        <div class="form-group full">
+          <label class="lbl">Krátký popis (pod nadpisem oddělení)</label>
+          <textarea id="dtxt-desc-${dept.id}" rows="2">${esc(dept.description||'')}</textarea>
+          <div style="font-size:.76em;color:#888;margin-top:4px">Podporuje HTML: <code>&lt;b&gt;tučně&lt;/b&gt;</code>, <code>&lt;a href="https://..."&gt;odkaz&lt;/a&gt;</code></div>
+        </div>
+        <div class="form-group full">
+          <label class="lbl">Informační box (žlutý / modrý text – nepovinný)</label>
+          <textarea id="dtxt-info-${dept.id}" rows="3">${esc(dept.infoText||'')}</textarea>
+          <div style="font-size:.76em;color:#888;margin-top:4px">Podporuje HTML: <code>&lt;b&gt;tučně&lt;/b&gt;</code>, <code>&lt;a href="https://..."&gt;odkaz&lt;/a&gt;</code></div>
+        </div>
+      </div>`;
+    deptList.appendChild(block);
+  });
+
+  // Wire up text inputs
+  ['txt-title','txt-subtitle','txt-intro'].forEach(id => {
+    document.getElementById(id).oninput = () => markUnsaved();
+  });
+}
+
+function updateStep(i, val) { data.processSteps[i].text = val; markUnsaved(); }
+function updateStepNote(i, val) { data.processSteps[i].note = val; markUnsaved(); }
+function addStep() {
+  if (!data.processSteps) data.processSteps = [];
+  data.processSteps.push({text: 'Nový krok', note: ''});
+  markUnsaved();
+  renderTexts();
+}
+function removeStep(i) { data.processSteps.splice(i, 1); markUnsaved(); renderTexts(); }
+
+// ── Save all ──────────────────────────────────────────────────────────────────
+async function saveAll() {
+  // Collect text fields
+  data.title     = document.getElementById('txt-title').value.trim();
+  data.subtitle  = document.getElementById('txt-subtitle').value.trim();
+  data.introText = document.getElementById('txt-intro').value.trim();
+  (data.departments || []).forEach(dept => {
+    const iconEl  = document.getElementById('dtxt-icon-'  + dept.id);
+    const shortEl = document.getElementById('dtxt-short-' + dept.id);
+    const nameEl  = document.getElementById('dtxt-name-'  + dept.id);
+    const descEl  = document.getElementById('dtxt-desc-'  + dept.id);
+    const infoEl  = document.getElementById('dtxt-info-'  + dept.id);
+    if (iconEl)  dept.icon        = iconEl.value.trim();
+    if (shortEl) dept.shortName   = shortEl.value.trim();
+    if (nameEl)  dept.name        = nameEl.value.trim();
+    if (descEl)  dept.description = descEl.value;
+    if (infoEl)  dept.infoText    = infoEl.value;
+  });
+
+  const btn = document.getElementById('save-btn');
+  btn.textContent = '⏳ Ukládám…';
+  btn.disabled = true;
+
+  try {
+    const r = await fetch('/api/data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    const j = await r.json();
+    if (j.ok) {
+      showToast('✓ Vše uloženo!');
+      unsaved = false;
+      document.getElementById('unsaved-dot').classList.remove('visible');
+    } else {
+      showToast('Chyba uložení: ' + (j.error || '?'), true);
+    }
+  } catch(e) {
+    showToast('Chyba: ' + e.message, true);
+  }
+
+  btn.textContent = '💾 Uložit vše';
+  btn.disabled = false;
+}
+
+// ── Export ────────────────────────────────────────────────────────────────────
+function exportData() {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'katalog-oopp-backup-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function getDeptById(id) { return (data.departments || []).find(d => d.id === id); }
+
+function markUnsaved() {
+  unsaved = true;
+  document.getElementById('unsaved-dot').classList.add('visible');
+}
+
+let toastTimer;
+function showToast(msg, isErr) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = isErr ? '#c00' : '#007bc2';
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function esc(s) {
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Password change ───────────────────────────────────────────────────────────
+async function changePassword() {
+  const cur  = document.getElementById('pw-current').value;
+  const nw   = document.getElementById('pw-new').value;
+  const conf = document.getElementById('pw-confirm').value;
+  if (!cur || !nw || !conf) { showToast('Vyplňte všechna pole.', true); return; }
+  if (nw !== conf) { showToast('Nová hesla se neshodují!', true); return; }
+  if (nw.length < 4) { showToast('Nové heslo musí mít alespoň 4 znaky.', true); return; }
+  try {
+    const r = await fetch('/api/change-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ currentPassword: cur, newPassword: nw })
+    });
+    const j = await r.json();
+    if (j.ok) {
+      showToast('✓ Heslo bylo úspěšně změněno!');
+      ['pw-current','pw-new','pw-confirm'].forEach(id => document.getElementById(id).value = '');
+    } else {
+      showToast(j.error || 'Chyba změny hesla.', true);
+    }
+  } catch(e) { showToast('Chyba: ' + e.message, true); }
+}
+
+// ── Confirm modal ─────────────────────────────────────────────────────────────
+let _confirmCb = null;
+function showConfirm(message, okLabel, cb) {
+  document.getElementById('confirm-message').textContent = message;
+  document.getElementById('confirm-ok-btn').textContent = okLabel || 'Potvrdit';
+  _confirmCb = cb;
+  document.getElementById('confirm-modal').classList.add('open');
+}
+function confirmOk() {
+  document.getElementById('confirm-modal').classList.remove('open');
+  if (_confirmCb) _confirmCb();
+  _confirmCb = null;
+}
+function confirmCancel() {
+  document.getElementById('confirm-modal').classList.remove('open');
+  _confirmCb = null;
+}
+
+// ── NAROKY ────────────────────────────────────────────────────────────────────
+function renderNaroky() {
+  const container = document.getElementById('naroky-container');
+  if (!container) return;
+  container.innerHTML = '';
+
+  (data.departments || []).forEach(dept => {
+    const allItems = (dept.categories || []).flatMap(cat => cat.items || []);
+    if (!allItems.length) return;
+
+    let rows = '';
+    allItems.forEach(item => {
+      rows += `<tr style="border-bottom:1px solid #eef2f8">
+        <td style="padding:5px 6px">
+          <input type="text" value="${esc(item.kat||'')}"
+            style="width:68px;text-align:center;font-weight:700;font-size:.88em;padding:5px 4px"
+            onchange="updateNarokField('${esc(item.id)}','kat',this.value)"
+            title="Katalogové číslo">
+        </td>
+        <td style="padding:5px 8px;font-size:.88em;color:#333">${esc(item.name)}</td>
+        <td style="padding:5px 6px">
+          <input type="text" value="${esc(item.narok||'')}"
+            style="min-width:180px;font-size:.88em;padding:5px 8px"
+            placeholder="např. 2 ks / rok"
+            onchange="updateNarokField('${esc(item.id)}','narok',this.value)"
+            title="Nárok / četnost výdeje">
+        </td>
+      </tr>`;
+    });
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.marginBottom = '20px';
+    card.innerHTML = `
+      <div class="card-header" style="margin-bottom:10px">
+        <div class="card-title">${esc(dept.icon||'')} ${esc(dept.name)}</div>
+      </div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse">
+          <thead>
+            <tr style="font-size:.76em;font-weight:700;color:#005090;border-bottom:2px solid #007bc2;text-transform:uppercase;letter-spacing:.3px">
+              <th style="padding:5px 6px;text-align:left;width:88px">Kat. č.</th>
+              <th style="padding:5px 8px;text-align:left">Název položky</th>
+              <th style="padding:5px 6px;text-align:left">Nárok / Četnost</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>`;
+    container.appendChild(card);
+  });
+}
+
+function updateNarokField(itemId, field, val) {
+  for (const dept of (data.departments || [])) {
+    for (const cat of (dept.categories || [])) {
+      const item = (cat.items || []).find(i => i.id === itemId);
+      if (item) {
+        item[field] = val.trim();
+        markUnsaved();
+        // if kat changed, re-render products so the change is visible there too
+        if (field === 'kat') renderProducts();
+        return;
+      }
+    }
+  }
+}
+
+// ── Emoji picker ──────────────────────────────────────────────────────────────
+function buildEmojiPickerHtml(deptId, current) {
+  let rows = '';
+  EMOJI_GROUPS.forEach(g => {
+    rows += `<span class="epick-label">${g.label}</span><div class="epick-grid">`;
+    g.emojis.forEach(e => {
+      const title = e === '🧑‍🏭' ? 'svářeč / dělník' : e;
+      const sel = e === current ? ' sel' : '';
+      rows += `<button type="button" class="epick-opt${sel}" title="${title}" onclick="selectEmoji('${deptId}','${e.replace(/'/g,"&#39;")}')">${e}</button>`;
+    });
+    rows += `</div>`;
+  });
+  return `<div class="emoji-picker-wrap">
+    <button type="button" class="emoji-picker-btn" id="emoji-btn-${deptId}" onclick="toggleEmojiPicker(event,'${deptId}')">${current || '🏭'}</button>
+    <input type="hidden" id="dtxt-icon-${deptId}" value="${esc(current)}">
+    <div class="emoji-picker-dropdown" id="emoji-drop-${deptId}">${rows}</div>
+  </div>`;
+}
+
+function toggleEmojiPicker(e, deptId) {
+  e.stopPropagation();
+  document.querySelectorAll('.emoji-picker-dropdown.open').forEach(d => {
+    if (d.id !== 'emoji-drop-' + deptId) d.classList.remove('open');
+  });
+  document.getElementById('emoji-drop-' + deptId).classList.toggle('open');
+}
+
+function selectEmoji(deptId, emoji) {
+  document.getElementById('dtxt-icon-' + deptId).value = emoji;
+  document.getElementById('emoji-btn-' + deptId).textContent = emoji;
+  document.getElementById('emoji-drop-' + deptId).classList.remove('open');
+  document.querySelectorAll('#emoji-drop-' + deptId + ' .epick-opt').forEach(b => {
+    b.classList.toggle('sel', b.textContent.trim() === emoji);
+  });
+  markUnsaved();
+}
+
+document.addEventListener('click', () => {
+  document.querySelectorAll('.emoji-picker-dropdown.open').forEach(d => d.classList.remove('open'));
+});
+
+// ── Departments ───────────────────────────────────────────────────────────────
+function addDepartment() {
+  document.getElementById('new-dept-name').value = '';
+  document.getElementById('new-dept-short').value = '';
+  document.getElementById('add-dept-modal').classList.add('open');
+  setTimeout(() => document.getElementById('new-dept-name').focus(), 50);
+}
+
+function closeAddDeptModal() {
+  document.getElementById('add-dept-modal').classList.remove('open');
+}
+
+function confirmAddDept() {
+  const name  = document.getElementById('new-dept-name').value.trim();
+  const short = document.getElementById('new-dept-short').value.trim() || name.split('/')[0].trim();
+  if (!name) { document.getElementById('new-dept-name').focus(); showToast('Zadejte název oddělení.', true); return; }
+  const id = 'dept_' + Date.now();
+  if (!data.departments) data.departments = [];
+  data.departments.push({ id, icon: '🏭', shortName: short, name, description: '', infoText: '', categories: [] });
+  closeAddDeptModal();
+  markUnsaved();
+  renderAll();
+  showToast('Oddělení přidáno. Ikonu vyberete v sekci Texty a popis.');
+}
+
+function renameDept(deptId, field, val) {
+  getDeptById(deptId)[field] = val.trim();
+  markUnsaved();
+}
+
+function moveCat(deptId, catIdx, dir) {
+  const cats = getDeptById(deptId).categories;
+  const newIdx = catIdx + dir;
+  if (newIdx < 0 || newIdx >= cats.length) return;
+  [cats[catIdx], cats[newIdx]] = [cats[newIdx], cats[catIdx]];
+  markUnsaved();
+  renderProducts();
+}
+
+function moveItem(deptId, catIdx, itemIdx, dir) {
+  const items = getDeptById(deptId).categories[catIdx].items;
+  const newIdx = itemIdx + dir;
+  if (newIdx < 0 || newIdx >= items.length) return;
+  [items[itemIdx], items[newIdx]] = [items[newIdx], items[itemIdx]];
+  markUnsaved();
+  renderProducts();
+}
+
+function moveDept(deptId, dir) {
+  const idx = data.departments.findIndex(d => d.id === deptId);
+  const newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= data.departments.length) return;
+  const tmp = data.departments[idx];
+  data.departments[idx] = data.departments[newIdx];
+  data.departments[newIdx] = tmp;
+  markUnsaved();
+  renderProducts();
+}
+
+function deleteDept(deptId) {
+  const dept = getDeptById(deptId);
+  if (!dept) return;
+  const total = (dept.categories || []).reduce((s, c) => s + (c.items || []).length, 0);
+  showConfirm(`Smazat celé oddělení „${dept.name}" i se všemi kategoriemi a ${total} položkami?`, 'Smazat vše', () => {
+    data.departments = data.departments.filter(d => d.id !== deptId);
+    markUnsaved();
+    renderAll();
+    showToast('Oddělení smazáno.');
+  });
+}
+
+window.addEventListener('beforeunload', e => {
+  if (unsaved) { e.preventDefault(); e.returnValue = ''; }
+});
+</script>
+</body>
+</html>
