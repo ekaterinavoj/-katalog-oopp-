@@ -382,7 +382,7 @@ function buildItemRow(item) {
 
   return `<tr>
     <td>${esc(item.kat)}</td>
-    <td>${esc(item.name)}</td>
+    <td>${esc(item.name)}${item.maxPrice ? `<br><span style="color:#c0392b;font-weight:700;font-size:.82em">Max. ${esc(item.maxPrice)}</span>` : ''}</td>
     <td style="font-size:.9em">${esc(item.supplier||'—')}</td>
     <td style="font-size:.85em;color:#555">${esc(item.code||'—')}</td>
     <td class="vel-td">${esc(item.sizes||'')}</td>

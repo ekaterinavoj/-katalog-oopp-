@@ -262,6 +262,11 @@ textarea{resize:vertical;min-height:72px}
         <label class="lbl">Nárok / četnost výdeje</label>
         <input type="text" id="edit-narok" placeholder="2 ks / rok  nebo  dle potřeby">
       </div>
+      <div class="form-group">
+        <label class="lbl">Max. finanční strop <span style="font-weight:400;color:#999">(nepovinné)</span></label>
+        <input type="text" id="edit-maxprice" placeholder="např. 2 500 Kč">
+        <div class="help-tip">Zobrazí se červeně u položky v katalogu i ve správě.</div>
+      </div>
       <div class="form-group full">
         <label class="lbl">Obrázek položky</label>
         <div class="img-upload-area" id="img-drop-zone" onclick="triggerImgPick()" ondragover="dragOver(event)" ondrop="dropImg(event)">
@@ -549,6 +554,7 @@ function buildItemCard(item, deptId, catIdx, itemIdx) {
     item.code ? `<span>${esc(item.code)}</span>` : '',
     item.narok ? `<span>${esc(item.narok)}</span>` : '',
     item.isEs ? '<span class="es-tag">Engelbert-Strauss</span>' : '',
+    item.maxPrice ? `<span style="color:#c0392b;font-weight:700;border-color:rgba(192,57,43,.3)">Max. ${esc(item.maxPrice)}</span>` : '',
   ].filter(Boolean).join('');
 
   card.innerHTML = `
@@ -582,6 +588,7 @@ function openEditModal(deptId, catIdx, itemIdx) {
   document.getElementById('edit-code').value     = item.code     || '';
   document.getElementById('edit-sizes').value    = item.sizes    || '';
   document.getElementById('edit-narok').value    = item.narok    || '';
+  document.getElementById('edit-maxprice').value = item.maxPrice  || '';
   document.getElementById('edit-is-es').checked  = !!item.isEs;
   document.getElementById('edit-img').value      = item.image    || '';
   document.getElementById('edit-img-url').value  = item.image    || '';
@@ -608,6 +615,7 @@ function saveItem() {
   item.code     = document.getElementById('edit-code').value.trim();
   item.sizes    = document.getElementById('edit-sizes').value.trim();
   item.narok    = document.getElementById('edit-narok').value.trim();
+  item.maxPrice = document.getElementById('edit-maxprice').value.trim();
   item.isEs     = document.getElementById('edit-is-es').checked;
   item.image    = document.getElementById('edit-img').value.trim();
 
