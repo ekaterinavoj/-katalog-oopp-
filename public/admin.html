@@ -264,7 +264,15 @@ textarea{resize:vertical;min-height:72px}
       </div>
       <div class="form-group">
         <label class="lbl">Max. finanční strop <span style="font-weight:400;color:#999">(nepovinné)</span></label>
-        <input type="text" id="edit-maxprice" placeholder="např. 2 500 Kč">
+        <div style="display:flex;gap:6px">
+          <input type="text" id="edit-maxprice" placeholder="např. 2 500" style="flex:1">
+          <select id="edit-maxprice-currency" style="width:80px;border:1.5px solid #ccd6e0;border-radius:7px;padding:0 6px;font-size:.95em;background:#fff;color:#222">
+            <option value="CZK">CZK</option>
+            <option value="EUR">EUR</option>
+            <option value="USD">USD</option>
+            <option value="GBP">GBP</option>
+          </select>
+        </div>
         <div class="help-tip">Zobrazí se červeně u položky v katalogu i ve správě.</div>
       </div>
       <div class="form-group full">
@@ -337,7 +345,15 @@ textarea{resize:vertical;min-height:72px}
       </div>
       <div class="form-group">
         <label class="lbl">Max. finanční strop <span style="font-weight:400;color:#999">(nepovinné)</span></label>
-        <input type="text" id="add-maxprice" placeholder="např. 2 500 Kč">
+        <div style="display:flex;gap:6px">
+          <input type="text" id="add-maxprice" placeholder="např. 2 500" style="flex:1">
+          <select id="add-maxprice-currency" style="width:80px;border:1.5px solid #ccd6e0;border-radius:7px;padding:0 6px;font-size:.95em;background:#fff;color:#222">
+            <option value="CZK">CZK</option>
+            <option value="EUR">EUR</option>
+            <option value="USD">USD</option>
+            <option value="GBP">GBP</option>
+          </select>
+        </div>
       </div>
     </div>
     <div class="modal-btns">
@@ -558,7 +574,7 @@ function buildItemCard(item, deptId, catIdx, itemIdx) {
     item.code ? `<span>${esc(item.code)}</span>` : '',
     item.narok ? `<span>${esc(item.narok)}</span>` : '',
     item.isEs ? '<span class="es-tag">Engelbert-Strauss</span>' : '',
-    item.maxPrice ? `<span style="color:#c0392b;font-weight:700;border-color:rgba(192,57,43,.3)">Max. ${esc(item.maxPrice)}</span>` : '',
+    item.maxPrice ? `<span style="color:#c0392b;font-weight:700;border-color:rgba(192,57,43,.3)">Max. ${esc(item.maxPrice)} ${esc(item.maxPriceCurrency||'CZK')}</span>` : '',
   ].filter(Boolean).join('');
 
   card.innerHTML = `
@@ -593,6 +609,7 @@ function openEditModal(deptId, catIdx, itemIdx) {
   document.getElementById('edit-sizes').value    = item.sizes    || '';
   document.getElementById('edit-narok').value    = item.narok    || '';
   document.getElementById('edit-maxprice').value = item.maxPrice  || '';
+  document.getElementById('edit-maxprice-currency').value = item.maxPriceCurrency || 'CZK';
   document.getElementById('edit-is-es').checked  = !!item.isEs;
   document.getElementById('edit-img').value      = item.image    || '';
   document.getElementById('edit-img-url').value  = item.image    || '';
@@ -620,6 +637,7 @@ function saveItem() {
   item.sizes    = document.getElementById('edit-sizes').value.trim();
   item.narok    = document.getElementById('edit-narok').value.trim();
   item.maxPrice = document.getElementById('edit-maxprice').value.trim();
+  item.maxPriceCurrency = document.getElementById('edit-maxprice-currency').value || 'CZK';
   item.isEs     = document.getElementById('edit-is-es').checked;
   item.image    = document.getElementById('edit-img').value.trim();
 
@@ -750,6 +768,7 @@ function fillAddDeptSel(selectedDeptId) {
   });
   updateAddCatSel();
   deptSel.onchange = updateAddCatSel;
+  document.getElementById('add-maxprice-currency').value = 'CZK';
   ['add-kat','add-name','add-supplier','add-sizes','add-narok','add-maxprice'].forEach(id => {
     document.getElementById(id).value = '';
   });
@@ -782,7 +801,8 @@ function confirmAddItem() {
     isEs: false,
     image: '',
     narok: document.getElementById('add-narok').value.trim(),
-    maxPrice: document.getElementById('add-maxprice').value.trim()
+    maxPrice: document.getElementById('add-maxprice').value.trim(),
+    maxPriceCurrency: document.getElementById('add-maxprice-currency').value || 'CZK'
   };
   dept.categories[catIdx].items.push(newItem);
   closeAddModal();
