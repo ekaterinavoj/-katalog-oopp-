@@ -234,7 +234,7 @@ function renderCatalog() {
       allData.processSteps = allData.processSteps.map(s => typeof s === 'string' ? {text: s, note: ''} : s);
       h += `<h2>📋 Jak objednat OOPP</h2><ol class="process-list">`;
       allData.processSteps.forEach(s => {
-        const note = s.note ? `<span class="step-note">${esc(s.note)}</span>` : '';
+        const note = s.note ? `<span class="step-note">${s.note}</span>` : '';
         h += `<li><span>${s.text}${note}</span></li>`;
       });
       h += `</ol>`;
