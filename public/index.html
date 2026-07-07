@@ -433,6 +433,28 @@ function buildItemRow(item, fnIdx) {
   </tr>`;
 }
 
+// ── Anchor link handler — switch tab if target is in hidden panel ──────────────
+document.addEventListener('click', function(e) {
+  const a = e.target.closest('a[href^="#"]');
+  if (!a) return;
+  const rawId = decodeURIComponent(a.getAttribute('href').slice(1));
+  if (!rawId) return;
+  // try exact match first, then with spaces replaced by hyphens
+  const target = document.getElementById(rawId) || document.getElementById(rawId.replace(/\s+/g,'-'));
+  if (!target) return;
+  // find if target is inside a hidden tab panel
+  const panel = target.closest('.tab-panel');
+  if (panel && !panel.classList.contains('active')) {
+    const panelId = panel.id.replace('panel-', '');
+    switchTab(panelId);
+  }
+  // scroll after tab switch (small delay for CSS transition)
+  setTimeout(() => {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 50);
+  e.preventDefault();
+});
+
 // ── Tab switching ──────────────────────────────────────────────────────────────
 function switchTab(id) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
