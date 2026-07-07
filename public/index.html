@@ -310,6 +310,11 @@ function buildDeptHTML(dept) {
         </tr></thead>
         <tbody>${buildNarokRows(dept)}</tbody>
       </table>
+      ${(dept.categories||[]).some(c=>(c.items||[]).some(i=>i.maxPrice))
+        ? `<p style="margin:6px 10px 10px;font-size:.78em;color:#555;font-style:italic">
+            * Max. strop — maximální výše pořizovací ceny schválená vedením společnosti.
+           </p>`
+        : ''}
     </div>
   </div>`;
 
