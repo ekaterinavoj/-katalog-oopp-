@@ -46,10 +46,11 @@ Katalog OOPP_html/
 Admin panel (`/admin`) obsahuje čtyři sekce:
 
 ### 📦 Produkty
-- Přidání / editace / smazání jednotlivých OOPP položek
+- Přidání / editace / **smazání** jednotlivých OOPP položek (tlačítko 🗑 Smazat na kartě položky, s potvrzovacím dialogem)
 - Každá položka: katalogové číslo, název, dodavatel, výrobní kód, velikosti, nárok / četnost, obrázek, volitelný max. finanční strop s výběrem měny (CZK, EUR, USD, GBP)
 - Nahrání obrázku (přetažení nebo výběr souboru, max 10 MB) nebo zadání URL
 - **Max. finanční strop** — nepovinné pole; zobrazí se červeně a tučně u položky v katalogu i ve správě (např. `Max. 2 500 CZK`)
+- **Označení velikostí hvězdičkou** — přidejte `*` za velikost (např. `2XL*, 3XL*`) pro označení speciálních velikostí; v poli „Poznámka k velikostem" napište vysvětlení (např. `* Dostupné pouze na objednání`); v katalogu se zobrazí jako poznámka pod čarou se superscriptem (¹ ² …), čísla jsou jednotná v celém oddělení
 - **Kopírování položky** — tlačítko 📋 Kopírovat na kartě položky uloží položku do schránky; tlačítko 📋 Vložit zkopírovanou položku se zobrazí u každé kategorie a umožní přidat kopii do jiného oddělení bez opětovného vypisování
 - **Přesouvání pořadí** — tlačítka ↑ ↓ umožňují měnit pořadí oddělení, kategorií i jednotlivých položek
 - Přidání / přejmenování / smazání kategorií v rámci oddělení (přejmenování se automaticky synchronizuje do všech oddělení se stejným názvem kategorie)
@@ -64,7 +65,8 @@ Admin panel (`/admin`) obsahuje čtyři sekce:
 ### 📝 Texty a popis
 - Název a podtitulek katalogu, úvodní text
 - Kroky objednávky (text + volitelná vysvětlující poznámka pod každým krokem)
-- Pro každé oddělení: ikona (výběr z nabídky emoji), krátký název záložky, celý název, krátký popis a informační box
+- Pro každé oddělení: ikona (výběr z nabídky emoji), krátký název záložky, celý název
+- **Více textových bloků** — každé oddělení může mít libovolný počet bloků ve dvou typech: **Odstavec** (šedý, prostý text) a **Info box** (modrý, zvýrazněný); bloky lze přidávat, mazat a měnit jejich typ tlačítky v sekci Texty a popis
 - Textová pole podporují HTML — lze vkládat tučný text a hypertextové odkazy:
 
 | Co | Zápis |
