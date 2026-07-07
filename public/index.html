@@ -332,23 +332,26 @@ function buildDeptHTML(dept) {
     </tr></thead>
     <tbody>`;
 
+  // collect unique footnotes across entire department (so ¹ = same text everywhere)
+  const deptFootnotes = [];
+  (dept.categories || []).forEach(cat => {
+    (cat.items || []).forEach(item => {
+      if (item.sizesNote && !deptFootnotes.includes(item.sizesNote)) deptFootnotes.push(item.sizesNote);
+    });
+  });
+  const sup = ['¹','²','³','⁴','⁵'];
+
   (dept.categories || []).forEach(cat => {
     h += `<tr class="cat-row"><td colspan="7">${esc(cat.name)}</td></tr>`;
-    // collect unique footnotes for this category
-    const footnotes = [];
     (cat.items || []).forEach(item => {
-      if (item.sizesNote) {
-        if (!footnotes.includes(item.sizesNote)) footnotes.push(item.sizesNote);
-      }
-    });
-    (cat.items || []).forEach(item => {
-      const fnIdx = item.sizesNote ? footnotes.indexOf(item.sizesNote) + 1 : 0;
+      const fnIdx = item.sizesNote ? deptFootnotes.indexOf(item.sizesNote) + 1 : 0;
       h += buildItemRow(item, fnIdx);
     });
-    if (footnotes.length) {
-      const sup = ['¹','²','³','⁴','⁵'];
+    // show only footnotes that appear in this category
+    const catNotes = [...new Set((cat.items||[]).filter(i=>i.sizesNote).map(i=>i.sizesNote))];
+    if (catNotes.length) {
       h += `<tr><td colspan="7" style="padding:4px 9px 8px;font-size:.8em;color:#c0392b;font-style:italic;border-top:1px dashed rgba(192,57,43,.25)">` +
-        footnotes.map((n,i) => `${sup[i]||i+1} ${esc(n)}`).join(' &nbsp; ') +
+        catNotes.map(n => `${sup[deptFootnotes.indexOf(n)]||''} ${esc(n)}`).join(' &nbsp;&nbsp; ') +
         `</td></tr>`;
     }
   });
