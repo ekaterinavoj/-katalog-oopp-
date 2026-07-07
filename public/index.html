@@ -358,7 +358,7 @@ function buildDeptHTML(dept) {
     const catNotes = [...new Set((cat.items||[]).filter(i=>i.sizesNote).map(i=>i.sizesNote))];
     if (catNotes.length) {
       h += `<tr><td colspan="7" style="padding:4px 9px 8px;font-size:.8em;color:#c0392b;font-style:italic;border-top:1px dashed rgba(192,57,43,.25)">` +
-        catNotes.map(n => `${sup[deptFootnotes.indexOf(n)]||''} ${esc(n)}`).join(' &nbsp;&nbsp; ') +
+        catNotes.map(n => `${sup[deptFootnotes.indexOf(n)]||''} ${n}`).join(' &nbsp;&nbsp; ') +
         `</td></tr>`;
     }
   });
