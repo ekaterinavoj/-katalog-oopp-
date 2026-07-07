@@ -957,17 +957,23 @@ function renderTexts() {
           <input type="text" id="dtxt-name-${dept.id}" value="${esc(dept.name||'')}" placeholder="Výroba / Kvalita / Logistika">
         </div>
         <div class="form-group full">
-          <label class="lbl">Krátký popis (pod nadpisem oddělení)</label>
-          <textarea id="dtxt-desc-${dept.id}" rows="2">${esc(dept.description||'')}</textarea>
-          <div style="font-size:.76em;color:#888;margin-top:4px">Podporuje HTML: <code>&lt;b&gt;tučně&lt;/b&gt;</code>, <code>&lt;a href="https://..."&gt;odkaz&lt;/a&gt;</code></div>
-        </div>
-        <div class="form-group full">
-          <label class="lbl">Informační box (žlutý / modrý text – nepovinný)</label>
-          <textarea id="dtxt-info-${dept.id}" rows="3">${esc(dept.infoText||'')}</textarea>
-          <div style="font-size:.76em;color:#888;margin-top:4px">Podporuje HTML: <code>&lt;b&gt;tučně&lt;/b&gt;</code>, <code>&lt;a href="https://..."&gt;odkaz&lt;/a&gt;</code></div>
+          <label class="lbl">Textové bloky oddělení</label>
+          <div id="dtxt-blocks-${dept.id}" style="display:flex;flex-direction:column;gap:8px;margin-bottom:6px"></div>
+          <div style="display:flex;gap:8px;margin-top:4px">
+            <button class="btn btn-ghost btn-sm" onclick="addDeptBlock('${dept.id}','text')">+ Přidat odstavec</button>
+            <button class="btn btn-ghost btn-sm" onclick="addDeptBlock('${dept.id}','info')">+ Přidat info box</button>
+          </div>
+          <div style="font-size:.76em;color:#888;margin-top:6px">Podporuje HTML: <code>&lt;b&gt;tučně&lt;/b&gt;</code>, <code>&lt;a href="https://..."&gt;odkaz&lt;/a&gt;</code></div>
         </div>
       </div>`;
     deptList.appendChild(block);
+    // migrate old description/infoText to blocks if blocks not yet set
+    if (!dept.blocks) {
+      dept.blocks = [];
+      if (dept.description) dept.blocks.push({type:'text', content: dept.description});
+      if (dept.infoText)    dept.blocks.push({type:'info', content: dept.infoText});
+    }
+    renderDeptBlocks(dept.id, dept.blocks);
   });
 
   // Wire up text inputs
@@ -986,6 +992,59 @@ function addStep() {
 }
 function removeStep(i) { data.processSteps.splice(i, 1); markUnsaved(); renderTexts(); }
 
+// ── Dept blocks ───────────────────────────────────────────────────────────────
+function renderDeptBlocks(deptId, blocks) {
+  const container = document.getElementById('dtxt-blocks-' + deptId);
+  if (!container) return;
+  container.innerHTML = '';
+  blocks.forEach((blk, i) => {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;gap:6px;align-items:flex-start';
+    const isInfo = blk.type === 'info';
+    row.innerHTML = `
+      <select onchange="changeDeptBlockType('${deptId}',${i},this.value)" style="width:110px;border:1.5px solid #ccd6e0;border-radius:7px;padding:4px 6px;font-size:.85em;background:#fff;flex-shrink:0">
+        <option value="text" ${!isInfo?'selected':''}>📝 Odstavec</option>
+        <option value="info" ${isInfo?'selected':''}>ℹ️ Info box</option>
+      </select>
+      <textarea rows="2" style="flex:1;border:1.5px solid ${isInfo?'rgba(0,123,194,.4)':'#ccd6e0'};border-radius:7px;padding:6px 8px;font-size:.88em;resize:vertical;background:${isInfo?'rgba(200,213,253,.12)':'#fff'}"
+        onchange="updateDeptBlock('${deptId}',${i},this.value)"
+        oninput="markUnsaved()">${esc(blk.content||'')}</textarea>
+      <button class="btn btn-ghost btn-sm" onclick="removeDeptBlock('${deptId}',${i})" style="padding:4px 8px;color:#c00;flex-shrink:0" title="Smazat blok">✕</button>`;
+    container.appendChild(row);
+  });
+}
+
+function addDeptBlock(deptId, type) {
+  const dept = getDeptById(deptId);
+  if (!dept.blocks) dept.blocks = [];
+  dept.blocks.push({type, content: ''});
+  renderDeptBlocks(deptId, dept.blocks);
+  markUnsaved();
+  // focus the new textarea
+  const rows = document.querySelectorAll(`#dtxt-blocks-${deptId} textarea`);
+  if (rows.length) rows[rows.length-1].focus();
+}
+
+function removeDeptBlock(deptId, idx) {
+  const dept = getDeptById(deptId);
+  dept.blocks.splice(idx, 1);
+  renderDeptBlocks(deptId, dept.blocks);
+  markUnsaved();
+}
+
+function updateDeptBlock(deptId, idx, val) {
+  const dept = getDeptById(deptId);
+  if (dept.blocks && dept.blocks[idx]) dept.blocks[idx].content = val;
+  markUnsaved();
+}
+
+function changeDeptBlockType(deptId, idx, type) {
+  const dept = getDeptById(deptId);
+  if (dept.blocks && dept.blocks[idx]) dept.blocks[idx].type = type;
+  renderDeptBlocks(deptId, dept.blocks);
+  markUnsaved();
+}
+
 // ── Save all ──────────────────────────────────────────────────────────────────
 async function saveAll() {
   // Collect text fields
@@ -996,13 +1055,15 @@ async function saveAll() {
     const iconEl  = document.getElementById('dtxt-icon-'  + dept.id);
     const shortEl = document.getElementById('dtxt-short-' + dept.id);
     const nameEl  = document.getElementById('dtxt-name-'  + dept.id);
-    const descEl  = document.getElementById('dtxt-desc-'  + dept.id);
-    const infoEl  = document.getElementById('dtxt-info-'  + dept.id);
-    if (iconEl)  dept.icon        = iconEl.value.trim();
-    if (shortEl) dept.shortName   = shortEl.value.trim();
-    if (nameEl)  dept.name        = nameEl.value.trim();
-    if (descEl)  dept.description = descEl.value;
-    if (infoEl)  dept.infoText    = infoEl.value;
+    if (iconEl)  dept.icon      = iconEl.value.trim();
+    if (shortEl) dept.shortName = shortEl.value.trim();
+    if (nameEl)  dept.name      = nameEl.value.trim();
+    // collect blocks from textareas
+    const container = document.getElementById('dtxt-blocks-' + dept.id);
+    if (container && dept.blocks) {
+      const textareas = container.querySelectorAll('textarea');
+      textareas.forEach((ta, i) => { if (dept.blocks[i]) dept.blocks[i].content = ta.value; });
+    }
   });
 
   const btn = document.getElementById('save-btn');

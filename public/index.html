@@ -312,12 +312,18 @@ function buildDeptHTML(dept) {
 
   h += `<h2>${esc(dept.name)}</h2>`;
 
-  if (dept.infoText) {
-    h += `<div class="info-sales"><b>Důležité informace:</b><br>${dept.infoText}</div>`;
-  }
-
-  if (dept.description) {
-    h += `<p>${dept.description}</p>`;
+  if (dept.blocks && dept.blocks.length) {
+    dept.blocks.forEach(blk => {
+      if (!blk.content) return;
+      if (blk.type === 'info') {
+        h += `<div class="info-sales">${blk.content}</div>`;
+      } else {
+        h += `<p>${blk.content}</p>`;
+      }
+    });
+  } else {
+    if (dept.infoText)    h += `<div class="info-sales"><b>Důležité informace:</b><br>${dept.infoText}</div>`;
+    if (dept.description) h += `<p>${dept.description}</p>`;
   }
 
   h += `<div class="table-scroll-wrap"><table class="item-table">
