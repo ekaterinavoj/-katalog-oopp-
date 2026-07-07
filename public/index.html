@@ -29,6 +29,8 @@ h2{color:rgb(10,11,9);font-size:1.35em;margin:32px 0 12px 0;font-weight:700;lett
 .tab-panel{display:none;padding:22px 0 8px 0}
 .tab-panel.active{display:block;animation:fadeTab .2s ease}
 @keyframes fadeTab{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@keyframes anchorPulse{0%{background:rgba(255,220,0,.0)}20%{background:rgba(255,220,0,.45)}80%{background:rgba(255,220,0,.3)}100%{background:rgba(255,220,0,.0)}}
+.anchor-highlight{animation:anchorPulse 2s ease;border-radius:6px}
 .info-sales{background:rgba(200,213,253,.22);border-left:4px solid rgb(0,123,194);color:rgb(10,11,9);padding:16px 22px;margin:0 0 20px 0;border-radius:8px}
 .narok-section{margin:22px 0 10px 0;background:#f5f9fd;border:1.5px solid rgba(0,123,194,.22);border-radius:12px;overflow:hidden}
 .narok-header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:rgba(0,123,194,.08);border-bottom:1px solid rgba(0,123,194,.18);cursor:pointer;user-select:none}
@@ -451,6 +453,8 @@ document.addEventListener('click', function(e) {
   // scroll after tab switch (small delay for CSS transition)
   setTimeout(() => {
     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    target.classList.add('anchor-highlight');
+    setTimeout(() => target.classList.remove('anchor-highlight'), 2000);
   }, 50);
   e.preventDefault();
 });
