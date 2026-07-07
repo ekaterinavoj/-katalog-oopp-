@@ -362,6 +362,16 @@ function narokBadge(val) {
   return `<span class="narok-badge narok-pozadavku">${esc(val)}</span>`;
 }
 
+function renderSizes(sizes) {
+  if (!sizes) return '';
+  return sizes.split(',').map(s => {
+    const t = s.trim();
+    if (!t) return '';
+    if (t.endsWith('*')) return `<span style="color:#c0392b;font-weight:700">${esc(t)}</span>`;
+    return esc(t);
+  }).filter(Boolean).join(', ');
+}
+
 function buildItemRow(item) {
   const imgHtml = item.image
     ? `<img class="thumb-img" src="${esc(item.image)}" alt="${esc(item.name)}" onclick="openLightbox(this)" onerror="this.style.display='none'">`
@@ -385,7 +395,7 @@ function buildItemRow(item) {
     <td>${esc(item.name)}${item.maxPrice ? `<br><span style="color:#c0392b;font-weight:700;font-size:.82em">Max. ${esc(item.maxPrice)} ${esc(item.maxPriceCurrency||'CZK')}</span>` : ''}</td>
     <td style="font-size:.9em">${esc(item.supplier||'—')}</td>
     <td style="font-size:.85em;color:#555">${esc(item.code||'—')}</td>
-    <td class="vel-td">${esc(item.sizes||'')}</td>
+    <td class="vel-td">${renderSizes(item.sizes||'')}${item.sizesNote ? `<br><span style="font-size:.78em;color:#c0392b;font-style:italic">${esc(item.sizesNote)}</span>` : ''}</td>
     <td class="img-cell">${imgHtml}</td>
     <td class="cart-td">${cartHtml}</td>
   </tr>`;

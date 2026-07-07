@@ -256,7 +256,11 @@ textarea{resize:vertical;min-height:72px}
       <div class="form-group">
         <label class="lbl">Dostupné velikosti</label>
         <input type="text" id="edit-sizes" placeholder="S, M, L, XL  nebo  36, 38, 40…">
-        <div class="help-tip">Oddělte čárkou. Pro jedinečnou velikost napište UNI.</div>
+        <div class="help-tip">Oddělte čárkou. Pro jedinečnou velikost napište UNI. Přidejte <b>*</b> za velikost pro označení (např. <b>2XL*, 62*</b>).</div>
+      </div>
+      <div class="form-group full">
+        <label class="lbl">Poznámka k velikostem <span style="font-weight:400;color:#999">(nepovinné — vysvětlení * označení)</span></label>
+        <input type="text" id="edit-sizes-note" placeholder="např. * Dostupné pouze na objednání">
       </div>
       <div class="form-group">
         <label class="lbl">Nárok / četnost výdeje</label>
@@ -338,6 +342,10 @@ textarea{resize:vertical;min-height:72px}
       <div class="form-group">
         <label class="lbl">Velikosti</label>
         <input type="text" id="add-sizes" placeholder="S, M, L, XL">
+      </div>
+      <div class="form-group full">
+        <label class="lbl">Poznámka k velikostem <span style="font-weight:400;color:#999">(nepovinné)</span></label>
+        <input type="text" id="add-sizes-note" placeholder="např. * Dostupné pouze na objednání">
       </div>
       <div class="form-group">
         <label class="lbl">Nárok / četnost</label>
@@ -554,6 +562,18 @@ function renderProducts() {
   });
 }
 
+function renderSizes(sizes) {
+  if (!sizes) return '';
+  return sizes.split(',').map(s => {
+    const t = s.trim();
+    if (!t) return '';
+    if (t.endsWith('*')) {
+      return `<span style="color:#c0392b;font-weight:700">${esc(t)}</span>`;
+    }
+    return esc(t);
+  }).filter(Boolean).join(', ');
+}
+
 function buildItemCard(item, deptId, catIdx, itemIdx) {
   const card = document.createElement('div');
   card.className = 'item-card';
@@ -569,7 +589,7 @@ function buildItemCard(item, deptId, catIdx, itemIdx) {
   }
 
   const tags = [
-    item.sizes ? `<span>${esc(item.sizes)}</span>` : '',
+    item.sizes ? `<span>${renderSizes(item.sizes)}</span>` : '',
     item.supplier ? `<span>${esc(item.supplier)}</span>` : '',
     item.code ? `<span>${esc(item.code)}</span>` : '',
     item.narok ? `<span>${esc(item.narok)}</span>` : '',
@@ -582,6 +602,7 @@ function buildItemCard(item, deptId, catIdx, itemIdx) {
     <div class="item-info">
       <div class="item-name">Kat.&nbsp;č.&nbsp;${esc(item.kat)}&nbsp;&nbsp;${esc(item.name)}</div>
       <div class="item-meta">${tags}</div>
+      ${item.sizesNote ? `<div style="font-size:.78em;color:#c0392b;font-style:italic;margin-top:3px">${esc(item.sizesNote)}</div>` : ''}
     </div>
     <div class="item-actions">
       <div style="display:flex;gap:3px;margin-bottom:4px">
@@ -606,8 +627,9 @@ function openEditModal(deptId, catIdx, itemIdx) {
   document.getElementById('edit-name').value     = item.name     || '';
   document.getElementById('edit-supplier').value = item.supplier || '';
   document.getElementById('edit-code').value     = item.code     || '';
-  document.getElementById('edit-sizes').value    = item.sizes    || '';
-  document.getElementById('edit-narok').value    = item.narok    || '';
+  document.getElementById('edit-sizes').value      = item.sizes     || '';
+  document.getElementById('edit-sizes-note').value = item.sizesNote || '';
+  document.getElementById('edit-narok').value      = item.narok     || '';
   document.getElementById('edit-maxprice').value = item.maxPrice  || '';
   document.getElementById('edit-maxprice-currency').value = item.maxPriceCurrency || 'CZK';
   document.getElementById('edit-is-es').checked  = !!item.isEs;
@@ -634,8 +656,9 @@ function saveItem() {
   item.name     = name;
   item.supplier = document.getElementById('edit-supplier').value.trim();
   item.code     = document.getElementById('edit-code').value.trim();
-  item.sizes    = document.getElementById('edit-sizes').value.trim();
-  item.narok    = document.getElementById('edit-narok').value.trim();
+  item.sizes     = document.getElementById('edit-sizes').value.trim();
+  item.sizesNote = document.getElementById('edit-sizes-note').value.trim();
+  item.narok     = document.getElementById('edit-narok').value.trim();
   item.maxPrice = document.getElementById('edit-maxprice').value.trim();
   item.maxPriceCurrency = document.getElementById('edit-maxprice-currency').value || 'CZK';
   item.isEs     = document.getElementById('edit-is-es').checked;
@@ -769,7 +792,7 @@ function fillAddDeptSel(selectedDeptId) {
   updateAddCatSel();
   deptSel.onchange = updateAddCatSel;
   document.getElementById('add-maxprice-currency').value = 'CZK';
-  ['add-kat','add-name','add-supplier','add-sizes','add-narok','add-maxprice'].forEach(id => {
+  ['add-kat','add-name','add-supplier','add-sizes','add-sizes-note','add-narok','add-maxprice'].forEach(id => {
     document.getElementById(id).value = '';
   });
 }
@@ -798,6 +821,7 @@ function confirmAddItem() {
     supplier: document.getElementById('add-supplier').value.trim(),
     code: '',
     sizes: document.getElementById('add-sizes').value.trim() || 'UNI',
+    sizesNote: document.getElementById('add-sizes-note').value.trim(),
     isEs: false,
     image: '',
     narok: document.getElementById('add-narok').value.trim(),
