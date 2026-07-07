@@ -306,6 +306,7 @@ function buildDeptHTML(dept) {
           <th class="narok-kat">Kat.&nbsp;č.</th>
           <th>Položka OOPP</th>
           <th style="width:160px;text-align:center">Nárok / Četnost</th>
+          <th style="width:110px;text-align:center">Max. strop</th>
         </tr></thead>
         <tbody>${buildNarokRows(dept)}</tbody>
       </table>
@@ -377,6 +378,7 @@ function buildNarokRows(dept) {
         <td class="narok-kat">${esc(item.kat)}</td>
         <td>${esc(item.name)}</td>
         <td style="text-align:center">${narokBadge(item.narok)}</td>
+        <td style="text-align:center">${item.maxPrice ? `<span style="color:#c0392b;font-weight:700;font-size:.85em">${esc(item.maxPrice)}&nbsp;${esc(item.maxPriceCurrency||'CZK')}</span>` : '<span style="color:#bbb">—</span>'}</td>
       </tr>`;
     });
   });
