@@ -1006,7 +1006,7 @@ function renderDeptBlocks(deptId, blocks) {
         <option value="text" ${!isInfo?'selected':''}>📝 Odstavec</option>
         <option value="info" ${isInfo?'selected':''}>ℹ️ Info box</option>
       </select>
-      <textarea rows="2" style="flex:1;border:1.5px solid ${isInfo?'rgba(0,123,194,.4)':'#ccd6e0'};border-radius:7px;padding:6px 8px;font-size:.88em;resize:vertical;background:${isInfo?'rgba(200,213,253,.12)':'#fff'}"
+      <textarea rows="2" style="flex:1;border-left:4px solid ${isInfo?'#007bc2':'#a0a0a0'};border-top:1.5px solid ${isInfo?'rgba(0,123,194,.35)':'#d0d0d0'};border-right:1.5px solid ${isInfo?'rgba(0,123,194,.35)':'#d0d0d0'};border-bottom:1.5px solid ${isInfo?'rgba(0,123,194,.35)':'#d0d0d0'};border-radius:0 7px 7px 0;padding:6px 8px;font-size:.88em;resize:vertical;background:${isInfo?'#eef4fb':'#f7f7f7'}"
         onchange="updateDeptBlock('${deptId}',${i},this.value)"
         oninput="markUnsaved()">${esc(blk.content||'')}</textarea>
       <button class="btn btn-ghost btn-sm" onclick="removeDeptBlock('${deptId}',${i})" style="padding:4px 8px;color:#c00;flex-shrink:0" title="Smazat blok">✕</button>`;
