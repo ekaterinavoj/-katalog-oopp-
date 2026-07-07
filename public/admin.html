@@ -1008,26 +1008,51 @@ function renderDeptBlocks(deptId, blocks) {
   if (!container) return;
   container.innerHTML = '';
   blocks.forEach((blk, i) => {
-    const row = document.createElement('div');
-    row.style.cssText = 'display:flex;gap:6px;align-items:flex-start';
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'display:flex;flex-direction:column;gap:3px';
     const isInfo = blk.type === 'info';
-    row.innerHTML = `
-      <select onchange="changeDeptBlockType('${deptId}',${i},this.value)" style="width:110px;border:1.5px solid #ccd6e0;border-radius:7px;padding:4px 6px;font-size:.85em;background:#fff;flex-shrink:0">
-        <option value="text" ${!isInfo?'selected':''}>📝 Odstavec</option>
-        <option value="info" ${isInfo?'selected':''}>ℹ️ Info box</option>
-      </select>
-      <textarea rows="2" style="flex:1;border-left:4px solid ${isInfo?'#007bc2':'#a0a0a0'};border-top:1.5px solid ${isInfo?'rgba(0,123,194,.35)':'#d0d0d0'};border-right:1.5px solid ${isInfo?'rgba(0,123,194,.35)':'#d0d0d0'};border-bottom:1.5px solid ${isInfo?'rgba(0,123,194,.35)':'#d0d0d0'};border-radius:0 7px 7px 0;padding:6px 8px;font-size:.88em;resize:vertical;background:${isInfo?'#eef4fb':'#f7f7f7'}"
-        onchange="updateDeptBlock('${deptId}',${i},this.value)"
-        oninput="markUnsaved()">${esc(blk.content||'')}</textarea>
-      <button class="btn btn-ghost btn-sm" onclick="removeDeptBlock('${deptId}',${i})" style="padding:4px 8px;color:#c00;flex-shrink:0" title="Smazat blok">✕</button>`;
-    container.appendChild(row);
+    const anchor = blk.anchor || '';
+    wrap.innerHTML = `
+      <div style="display:flex;gap:6px;align-items:flex-start">
+        <select onchange="changeDeptBlockType('${deptId}',${i},this.value)" style="width:110px;border:1.5px solid #ccd6e0;border-radius:7px;padding:4px 6px;font-size:.85em;background:#fff;flex-shrink:0">
+          <option value="text" ${!isInfo?'selected':''}>📝 Odstavec</option>
+          <option value="info" ${isInfo?'selected':''}>ℹ️ Info box</option>
+        </select>
+        <textarea rows="2" style="flex:1;border-left:4px solid ${isInfo?'#007bc2':'#a0a0a0'};border-top:1.5px solid ${isInfo?'rgba(0,123,194,.35)':'#d0d0d0'};border-right:1.5px solid ${isInfo?'rgba(0,123,194,.35)':'#d0d0d0'};border-bottom:1.5px solid ${isInfo?'rgba(0,123,194,.35)':'#d0d0d0'};border-radius:0 7px 7px 0;padding:6px 8px;font-size:.88em;resize:vertical;background:${isInfo?'#eef4fb':'#f7f7f7'}"
+          onchange="updateDeptBlock('${deptId}',${i},this.value)"
+          oninput="markUnsaved()">${esc(blk.content||'')}</textarea>
+        <button class="btn btn-ghost btn-sm" onclick="removeDeptBlock('${deptId}',${i})" style="padding:4px 8px;color:#c00;flex-shrink:0" title="Smazat blok">✕</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;padding-left:116px">
+        <span style="font-size:.75em;color:#888;white-space:nowrap">🔗 Kotva (ID):</span>
+        <input type="text" value="${esc(anchor)}" placeholder="např. boty"
+          style="width:120px;border:1.5px solid #dde3ea;border-radius:6px;padding:2px 7px;font-size:.78em;font-family:monospace"
+          oninput="updateDeptBlockAnchor('${deptId}',${i},this.value);updateAnchorHint_${deptId}_${i}(this.value)"
+          id="anchor-input-${deptId}-${i}">
+        <span id="anchor-hint-${deptId}-${i}" style="font-size:.72em;color:#555;font-family:monospace">${anchor ? `<a href="#${esc(anchor)}">#${esc(anchor)}</a> → zkopíruj jako: &lt;a href="#${esc(anchor)}"&gt;text odkazu&lt;/a&gt;` : '<span style="color:#bbb">— zadej ID, zobrazí se hotový odkaz</span>'}</span>
+      </div>`;
+    container.appendChild(wrap);
+    // dynamic hint update
+    window[`updateAnchorHint_${deptId}_${i}`] = (val) => {
+      const hint = document.getElementById(`anchor-hint-${deptId}-${i}`);
+      if (!hint) return;
+      hint.innerHTML = val
+        ? `<a href="#${esc(val)}">#${esc(val)}</a> → zkopíruj: <code>&lt;a href="#${esc(val)}"&gt;text odkazu&lt;/a&gt;</code>`
+        : '<span style="color:#bbb">— zadej ID, zobrazí se hotový odkaz</span>';
+    };
   });
+}
+
+function updateDeptBlockAnchor(deptId, idx, val) {
+  const dept = getDeptById(deptId);
+  if (dept.blocks && dept.blocks[idx]) dept.blocks[idx].anchor = val.trim().replace(/\s+/g,'-');
+  markUnsaved();
 }
 
 function addDeptBlock(deptId, type) {
   const dept = getDeptById(deptId);
   if (!dept.blocks) dept.blocks = [];
-  dept.blocks.push({type, content: ''});
+  dept.blocks.push({type, content: '', anchor: ''});
   renderDeptBlocks(deptId, dept.blocks);
   markUnsaved();
   // focus the new textarea
@@ -1073,6 +1098,10 @@ async function saveAll() {
     if (container && dept.blocks) {
       const textareas = container.querySelectorAll('textarea');
       textareas.forEach((ta, i) => { if (dept.blocks[i]) dept.blocks[i].content = ta.value; });
+      dept.blocks.forEach((blk, i) => {
+        const anc = document.getElementById(`anchor-input-${dept.id}-${i}`);
+        if (anc) blk.anchor = anc.value.trim().replace(/\s+/g,'-');
+      });
     }
   });
 

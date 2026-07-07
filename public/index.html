@@ -315,10 +315,11 @@ function buildDeptHTML(dept) {
   if (dept.blocks && dept.blocks.length) {
     dept.blocks.forEach(blk => {
       if (!blk.content) return;
+      const idAttr = blk.anchor ? ` id="${esc(blk.anchor)}"` : '';
       if (blk.type === 'info') {
-        h += `<div class="info-sales">${blk.content}</div>`;
+        h += `<div class="info-sales"${idAttr}>${blk.content}</div>`;
       } else {
-        h += `<p>${blk.content}</p>`;
+        h += `<p${idAttr}>${blk.content}</p>`;
       }
     });
   } else {
