@@ -334,7 +334,23 @@ function buildDeptHTML(dept) {
 
   (dept.categories || []).forEach(cat => {
     h += `<tr class="cat-row"><td colspan="7">${esc(cat.name)}</td></tr>`;
-    (cat.items || []).forEach(item => { h += buildItemRow(item); });
+    // collect unique footnotes for this category
+    const footnotes = [];
+    (cat.items || []).forEach(item => {
+      if (item.sizesNote) {
+        if (!footnotes.includes(item.sizesNote)) footnotes.push(item.sizesNote);
+      }
+    });
+    (cat.items || []).forEach(item => {
+      const fnIdx = item.sizesNote ? footnotes.indexOf(item.sizesNote) + 1 : 0;
+      h += buildItemRow(item, fnIdx);
+    });
+    if (footnotes.length) {
+      const sup = ['¹','²','³','⁴','⁵'];
+      h += `<tr><td colspan="7" style="padding:4px 9px 8px;font-size:.8em;color:#c0392b;font-style:italic;border-top:1px dashed rgba(192,57,43,.25)">` +
+        footnotes.map((n,i) => `${sup[i]||i+1} ${esc(n)}`).join(' &nbsp; ') +
+        `</td></tr>`;
+    }
   });
 
   h += `</tbody></table></div>`;
@@ -362,17 +378,23 @@ function narokBadge(val) {
   return `<span class="narok-badge narok-pozadavku">${esc(val)}</span>`;
 }
 
-function renderSizes(sizes) {
+const FOOTNOTE_SUP = ['¹','²','³','⁴','⁵'];
+
+function renderSizes(sizes, fnIdx) {
   if (!sizes) return '';
   return sizes.split(',').map(s => {
     const t = s.trim();
     if (!t) return '';
-    if (t.endsWith('*')) return `<span style="color:#c0392b;font-weight:700">${esc(t)}</span>`;
+    if (t.endsWith('*')) {
+      const label = t.slice(0, -1);
+      const sup = fnIdx ? `<sup style="color:#c0392b">${FOOTNOTE_SUP[fnIdx-1]||fnIdx}</sup>` : '<sup style="color:#c0392b">*</sup>';
+      return `<span style="color:#c0392b;font-weight:700">${esc(label)}${sup}</span>`;
+    }
     return esc(t);
   }).filter(Boolean).join(', ');
 }
 
-function buildItemRow(item) {
+function buildItemRow(item, fnIdx) {
   const imgHtml = item.image
     ? `<img class="thumb-img" src="${esc(item.image)}" alt="${esc(item.name)}" onclick="openLightbox(this)" onerror="this.style.display='none'">`
     : `<span class="no-img">—</span>`;
@@ -395,7 +417,7 @@ function buildItemRow(item) {
     <td>${esc(item.name)}${item.maxPrice ? `<br><span style="color:#c0392b;font-weight:700;font-size:.82em">Max. ${esc(item.maxPrice)} ${esc(item.maxPriceCurrency||'CZK')}</span>` : ''}</td>
     <td style="font-size:.9em">${esc(item.supplier||'—')}</td>
     <td style="font-size:.85em;color:#555">${esc(item.code||'—')}</td>
-    <td class="vel-td">${renderSizes(item.sizes||'')}${item.sizesNote ? `<br><span style="font-size:.78em;color:#c0392b;font-style:italic">${esc(item.sizesNote)}</span>` : ''}</td>
+    <td class="vel-td">${renderSizes(item.sizes||'', fnIdx)}</td>
     <td class="img-cell">${imgHtml}</td>
     <td class="cart-td">${cartHtml}</td>
   </tr>`;
