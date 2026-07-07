@@ -974,6 +974,21 @@ function renderTexts() {
             <button class="btn btn-ghost btn-sm" onclick="addDeptBlock('${dept.id}','info')">+ Přidat info box</button>
           </div>
           <div style="font-size:.76em;color:#888;margin-top:6px">Podporuje HTML: <code>&lt;b&gt;tučně&lt;/b&gt;</code>, <code>&lt;a href="https://..."&gt;odkaz&lt;/a&gt;</code></div>
+          <details style="margin-top:10px;border:1.5px solid rgba(0,123,194,.25);border-radius:8px;overflow:hidden">
+            <summary style="padding:7px 12px;background:rgba(0,123,194,.06);cursor:pointer;font-size:.82em;font-weight:700;color:#005090;user-select:none">🔗 Jak vytvořit odkaz na konkrétní odstavec?</summary>
+            <div style="padding:10px 14px;font-size:.82em;color:#333;line-height:1.7;background:#f9fbfd">
+              <b>Krok 1 — Pojmenuj cílový odstavec (kotva)</b><br>
+              U bloku, <i>na který chceš odkazovat</i>, vyplň pole <b>🔗 Kotva (ID)</b>.<br>
+              Napiš krátké slovo bez mezer a diakritiky, např. <code>boty</code>, <code>bundy</code>, <code>objednavka</code>.<br>
+              Pod polem se okamžitě zobrazí hotový odkaz ke zkopírování.<br><br>
+              <b>Krok 2 — Vlož odkaz do textu</b><br>
+              Kdekoliv kde píšeš text (v jiném bloku, v poznámce pod položkou, v kroku objednávky…) použij:<br>
+              <code style="display:block;background:#eef4fb;padding:5px 8px;border-radius:5px;margin:4px 0">&lt;a href="#boty"&gt;více info o botách&lt;/a&gt;</code>
+              Místo <code>boty</code> napiš ID které jsi zadal/a v Kroku 1.<br><br>
+              <b>Jak najít ID odstavce?</b><br>
+              Podívej se na konkrétní blok níže — pod jeho textovým polem je řádek <b>🔗 Kotva (ID)</b>. Pokud tam ještě nic není, zadej ID teď. Hotový kód odkazu se zobrazí hned vedle.
+            </div>
+          </details>
         </div>
       </div>`;
     deptList.appendChild(block);
