@@ -67,6 +67,7 @@ Admin panel (`/admin`) obsahuje čtyři sekce:
 - Kroky objednávky (text + volitelná vysvětlující poznámka pod každým krokem)
 - Pro každé oddělení: ikona (výběr z nabídky emoji), krátký název záložky, celý název
 - **Více textových bloků** — každé oddělení může mít libovolný počet bloků ve dvou typech: **Odstavec** (šedý, prostý text) a **Info box** (modrý, zvýrazněný); bloky lze přidávat, mazat a měnit jejich typ tlačítky v sekci Texty a popis
+- **Kotvy (vnitřní odkazy)** — každý blok může dostat ID (pole „🔗 Kotva"), na které lze odkazovat odkudkoliv ze stránky pomocí `<a href="#id">text</a>`; po kliknutí se stránka přeroluje na cílový blok a ten se krátce žlutě zvýrazní; funguje i napříč záložkami oddělení
 - Textová pole podporují HTML — lze vkládat tučný text a hypertextové odkazy:
 
 | Co | Zápis |
@@ -74,6 +75,7 @@ Admin panel (`/admin`) obsahuje čtyři sekce:
 | Tučný text | `<b>tučný text</b>` |
 | Odkaz na web | `<a href="https://www.strauss.com">www.strauss.com</a>` |
 | Odkaz na e-mail | `<a href="mailto:sklad@firma.cz">sklad@firma.cz</a>` |
+| Odkaz na odstavec | `<a href="#id-kotvy">text odkazu</a>` |
 
 ### ⚙️ Nastavení
 - Změna přihlašovacího hesla (nutné znát současné heslo)
