@@ -4,3 +4,13 @@ node_modules
 data/products.json
 data/auth.json
 public/uploads/
+
+# ── Citlivá data – nikdy nebalit do image ───────────────────────────────────
+data/*backup*
+*.env
+.env
+.env.*
+*.pem
+*.key
+*secret*
+*credentials*

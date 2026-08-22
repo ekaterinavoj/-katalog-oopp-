@@ -1,11 +1,20 @@
 # Závislosti
 node_modules/
 
-# Data a nahrané obrázky (zůstávají na serveru ve Docker volumes)
+# ── Citlivá data – nikdy necommitovat ───────────────────────────────────────
 data/products.json
 data/auth.json
 public/uploads/
+data/*backup*
+*.env
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*secret*
+*credentials*
 
-# Systémové soubory
+# ── Systémové soubory ────────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
