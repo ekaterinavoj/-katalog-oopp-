@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Katalog OOPP – Engel-Gematex</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; font-family: 'Segoe UI', system-ui, sans-serif; background: #f3f2f1; }
+
+    .teams-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 20px;
+      height: 56px;
+      background: #003f7a;
+      color: #fff;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,.18);
+    }
+    .teams-header img {
+      height: 34px;
+      border-radius: 4px;
+      background: #fff;
+      padding: 2px 6px;
+    }
+    .teams-header-divider {
+      width: 1px;
+      height: 28px;
+      background: rgba(255,255,255,.3);
+    }
+    .teams-header-text h1 {
+      font-size: 1.05em;
+      font-weight: 600;
+      letter-spacing: .2px;
+      line-height: 1.2;
+    }
+    .teams-header-text p {
+      font-size: .75em;
+      opacity: .75;
+      margin-top: 1px;
+    }
+    .teams-header-spacer { flex: 1; }
+    .teams-header-link {
+      font-size: .78em;
+      color: rgba(255,255,255,.85);
+      text-decoration: none;
+      padding: 5px 12px;
+      border: 1px solid rgba(255,255,255,.35);
+      border-radius: 5px;
+      transition: background .15s;
+      white-space: nowrap;
+    }
+    .teams-header-link:hover { background: rgba(255,255,255,.12); }
+
+    .teams-body {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 56px);
+    }
+    iframe {
+      flex: 1;
+      width: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+<header class="teams-header">
+  <img src="logo.jpg" alt="Gematex logo">
+  <div class="teams-header-divider"></div>
+  <div class="teams-header-text">
+    <h1>Katalog OOPP</h1>
+    <p>Engel-Gematex s.r.o.</p>
+  </div>
+  <div class="teams-header-spacer"></div>
+  <a class="teams-header-link" href="https://oopp.vojcik.net/" target="_blank">🔗 Otevřít v prohlížeči</a>
+</header>
+
+<div class="teams-body">
+  <iframe src="https://oopp.vojcik.net/?embed=1" title="Katalog OOPP" allow="fullscreen"></iframe>
+</div>
+
+<script>
+  // Teams JS SDK – inicializace (ignoruje se mimo Teams)
+  if (window.microsoftTeams) {
+    microsoftTeams.app.initialize();
+  }
+</script>
+</body>
+</html>

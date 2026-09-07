@@ -1,0 +1,47 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.17/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.17",
+  "version": "1.0.0",
+  "id": "c7d8e9f0-a1b2-4c3d-8e5f-6789abcdef01",
+  "packageName": "net.vojcik.oopp.katalog",
+  "developer": {
+    "name": "Engel-Gematex s.r.o.",
+    "websiteUrl": "https://oopp.vojcik.net",
+    "privacyUrl": "https://oopp.vojcik.net",
+    "termsOfUseUrl": "https://oopp.vojcik.net"
+  },
+  "name": {
+    "short": "Katalog OOPP",
+    "full": "Katalog OOPP – Engel-Gematex s.r.o."
+  },
+  "description": {
+    "short": "Přehled OOPP a nároků zaměstnanců",
+    "full": "Katalog osobních ochranných pracovních prostředků. Zaměstnanci mohou prohlížet dostupné OOPP, nároky a četnost výdeje."
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "accentColor": "#007BC2",
+  "staticTabs": [
+    {
+      "entityId": "katalogOOPP",
+      "name": "Katalog OOPP",
+      "contentUrl": "https://oopp.vojcik.net/teams.html",
+      "websiteUrl": "https://oopp.vojcik.net/",
+      "scopes": ["personal"]
+    }
+  ],
+  "configurableTabs": [
+    {
+      "configurationUrl": "https://oopp.vojcik.net/teams-config.html",
+      "canUpdateConfiguration": false,
+      "scopes": ["team", "groupChat"]
+    }
+  ],
+  "permissions": ["identity"],
+  "validDomains": [
+    "oopp.vojcik.net"
+  ],
+  "showLoadingIndicator": true
+}

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<title>Vytvoření ikon pro Teams</title>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; padding: 32px; max-width: 600px; margin: 0 auto; background: #f3f2f1; }
+  h1 { color: #003f7a; font-size: 1.3em; }
+  p  { color: #555; font-size: .92em; line-height: 1.6; }
+  canvas { border: 1px solid #ccc; border-radius: 8px; display: block; margin: 12px 0; }
+  .btn {
+    background: #007BC2; color: #fff; border: none; padding: 10px 20px;
+    border-radius: 6px; font-size: .9em; cursor: pointer; margin: 6px 0;
+    display: block; width: 220px; font-family: inherit;
+  }
+  .btn:hover { background: #005fa3; }
+  .section { background: #fff; border-radius: 10px; padding: 18px 22px; margin: 18px 0; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+  label { font-weight: 600; display: block; margin-bottom: 6px; color: #333; }
+  small { color: #888; font-size: .82em; }
+</style>
+</head>
+<body>
+<h1>🎨 Vytvoření ikon pro Teams záložku</h1>
+<p>Tato stránka vygeneruje dvě ikony potřebné pro Teams app balíček:</p>
+<ul style="color:#555;font-size:.9em;line-height:2">
+  <li><b>color.png</b> — 192×192 px, barevná ikona</li>
+  <li><b>outline.png</b> — 32×32 px, obrysová ikona (bílá na průhledném pozadí)</li>
+</ul>
+
+<div class="section">
+  <label>1. Barevná ikona – color.png (192×192)</label>
+  <canvas id="colorCanvas" width="192" height="192"></canvas>
+  <button class="btn" onclick="downloadCanvas('colorCanvas','color.png')">⬇ Stáhnout color.png</button>
+  <small>Uložte soubor jako <b>color.png</b> do složky <b>teams-app/</b></small>
+</div>
+
+<div class="section">
+  <label>2. Obrysová ikona – outline.png (32×32)</label>
+  <canvas id="outlineCanvas" width="32" height="32"></canvas>
+  <button class="btn" onclick="downloadCanvas('outlineCanvas','outline.png')">⬇ Stáhnout outline.png</button>
+  <small>Uložte soubor jako <b>outline.png</b> do složky <b>teams-app/</b></small>
+</div>
+
+<script>
+// Barevná ikona 192x192
+function drawColor() {
+  const c = document.getElementById('colorCanvas');
+  const ctx = c.getContext('2d');
+  const W = 192, H = 192;
+
+  // Pozadí – firemní modrá
+  ctx.fillStyle = '#007BC2';
+  ctx.roundRect(0, 0, W, H, 28);
+  ctx.fill();
+
+  // Bílý rámeček
+  ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+  ctx.lineWidth = 4;
+  ctx.roundRect(8, 8, W-16, H-16, 22);
+  ctx.stroke();
+
+  // Text "OOPP"
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 38px Segoe UI, Arial, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('OOPP', W/2, H/2 - 18);
+
+  // Podtext
+  ctx.font = '500 17px Segoe UI, Arial, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.82)';
+  ctx.fillText('Katalog', W/2, H/2 + 20);
+
+  // Malá linka
+  ctx.fillStyle = 'rgba(255,255,255,0.45)';
+  ctx.fillRect(W/2 - 40, H/2 + 1, 80, 2);
+}
+
+// Obrysová ikona 32x32
+function drawOutline() {
+  const c = document.getElementById('outlineCanvas');
+  const ctx = c.getContext('2d');
+  const W = 32, H = 32;
+
+  // Průhledné pozadí
+  ctx.clearRect(0, 0, W, H);
+
+  // Bílá ikona – schématická
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 12px Arial, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('OPP', W/2, H/2 - 3);
+  ctx.font = '9px Arial';
+  ctx.fillStyle = 'rgba(255,255,255,.7)';
+  ctx.fillText('KAT', W/2, H/2 + 8);
+}
+
+drawColor();
+drawOutline();
+
+function downloadCanvas(id, filename) {
+  const c = document.getElementById(id);
+  const a = document.createElement('a');
+  a.href = c.toDataURL('image/png');
+  a.download = filename;
+  a.click();
+}
+
+// Přidá roundRect polyfill pokud chybí (starší Chrome)
+if (!CanvasRenderingContext2D.prototype.roundRect) {
+  CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
+    this.beginPath();
+    this.moveTo(x+r, y);
+    this.lineTo(x+w-r, y);
+    this.arcTo(x+w, y, x+w, y+r, r);
+    this.lineTo(x+w, y+h-r);
+    this.arcTo(x+w, y+h, x+w-r, y+h, r);
+    this.lineTo(x+r, y+h);
+    this.arcTo(x, y+h, x, y+h-r, r);
+    this.lineTo(x, y+r);
+    this.arcTo(x, y, x+r, y, r);
+    this.closePath();
+    return this;
+  };
+  drawColor();
+}
+</script>
+</body>
+</html>

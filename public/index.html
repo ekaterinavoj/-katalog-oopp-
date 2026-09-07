@@ -141,6 +141,15 @@ h2{color:rgb(10,11,9);font-size:1.35em;margin:32px 0 12px 0;font-weight:700;lett
     </div>
   </div>
 
+<script>
+// Embed mode – skryje hlavičku a admin odkaz, když je URL ?embed=1
+(function(){
+  if(new URLSearchParams(location.search).get('embed')==='1'){
+    document.write('<style>.header-row,.header-brand,.admin-link{display:none!important}.wrapper{margin-top:10px!important;border-radius:0!important;border-left:none!important;border-right:none!important}</style>');
+  }
+})();
+</script>
+
   <div id="intro-section"></div>
 
   <hr>
